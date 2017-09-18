@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.vuforia.HINT;
@@ -16,15 +19,18 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
+import java.util.Locale;
 
 /*
  * This OpMode was written for the VuforiaDemo Basics video. This demonstrates basic principles of
  * using VuforiaDemo in FTC.
  */
-
 @Autonomous(name = "VuforiaNavIDAuto")
-public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
+public class VuforiaNavigationIDAuto extends LinearOpMode {
+    TextToSpeech ttsobject;
+    int results;
 
     // Variables to be used for later
     private VuforiaLocalizer vuforiaLocalizer;
@@ -42,14 +48,26 @@ public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
     private float robotY = 0;
     private float robotAngle = 0;
 
-    // public class ID_DATA_TYPE extends
+   // public class ID_DATA_TYPE extends
 
     public void runOpMode() throws InterruptedException {
         setupVuforia();
-
         // We don't know where the robot is, so set it to the origin
         // If we don't include this, it would be null, which would cause errors later on
         lastKnownLocation = createMatrix(0, 0, 0, 0, 0, 0);
+
+            ttsobject = new TextToSpeech(AppUtil.getInstance().getRootActivity(), new TextToSpeech.OnInitListener() {
+                @Override
+                public void onInit(int status) {
+                    if (status == TextToSpeech.SUCCESS) {
+                        results = ttsobject.setLanguage(Locale.ENGLISH);
+                        Log.i("info", "TextToSpeech.SUCCESS");
+
+                    } else {
+                        Log.e("error", "This Language is not supported");
+                    }
+                }
+            }); //TextToSpeech
 
 
         waitForStart();
@@ -57,19 +75,26 @@ public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
         // Start tracking the targets
         visionTargets.activate();
 
-        try{
+        int getDataType;
 
-        VuforiaTrackables relicTrackables = this.vuforiaLocalizer.loadTrackablesFromAsset("RelicVuMark");
-        VuforiaTrackable relicTemplate = relicTrackables.get(0);
-        RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+        while (opModeIsActive()) {
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(target);
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
-            while(opModeIsActive()) {
+                /* Found an instance of the template. In the actual game, you will probably
+                 * loop until this condition occurs, then move on to act accordingly depending
+                 * on which VuMark was visible. */
+                telemetry.addData("VuMark", "%s visible", vuMark);
+
+                ttsobject.speak(vuMark.toString(), TextToSpeech.QUEUE_FLUSH, null, null);
+                sleep(1000);
+
 
                 // Ask the listener for the latest information on where the robot is
                 OpenGLMatrix latestLocation = listener.getUpdatedRobotLocation();
 
                 // The listener will sometimes return null, so we check for that to prevent errors
-                if(latestLocation != null)
+                if (latestLocation != null)
                     lastKnownLocation = latestLocation;
 
                 float[] coordinates = lastKnownLocation.getTranslation().getData();
@@ -81,9 +106,6 @@ public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
                 // Send information about whether the target is visible, and where the robot is
                 telemetry.addData("Tracking " + target.getName(), listener.isVisible());
                 telemetry.addData("Last Known Location", formatMatrix(lastKnownLocation));
-                telemetry.addData("VuMark", "%s visible", vuMark);
-
-
 
 
                 // Send telemetry and idle to let hardware catch up
@@ -91,15 +113,6 @@ public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
                 idle();
             }
         }
-        catch(Exception e){
-            System.out.println("I AM HERE");
-            e.printStackTrace();
-        }
-
-    }
-
-    String format(OpenGLMatrix transformationMatrix) {
-        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 
     private void setupVuforia()
@@ -111,28 +124,22 @@ public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
         parameters.useExtendedTracking = false;
         vuforiaLocalizer = ClassFactory.createVuforiaLocalizer(parameters);
 
+        // These are the vision targets that we want to use
+        // The string needs to be the name of the appropriate .xml file in the assets folder
+        visionTargets = vuforiaLocalizer.loadTrackablesFromAsset("RelicVuMark");
+        Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
-        if (vuforiaLocalizer != null) {
-            // These are the vision targets that we want to use
-            // The string needs to be the name of the appropriate .xml file in the assets folder
-            visionTargets = vuforiaLocalizer.loadTrackablesFromAsset("RelicVuMark");
-            Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
+        // Setup the target to be tracked
+        target = visionTargets.get(0); // 0 corresponds to the wheels target
+        target.setName("RelicRecovery");
+        target.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
 
-            // Setup the target to be tracked
-            target = visionTargets.get(0); // 0 corresponds to the wheels target
-            target.setName("RelicRecovery");
-            target.setLocation(createMatrix(0, 500, 0, 90, 0, 90));
+        // Set phone location on robot
+        phoneLocation = createMatrix(0, 225, 0, 90, 0, 0);
 
-            // Set phone location on robot
-            phoneLocation = createMatrix(0, 225, 0, 90, 0, 0);
-
-            // Setup listener and inform it of phone information
-            listener = (VuforiaTrackableDefaultListener) target.getListener();
-            listener.setPhoneInformation(phoneLocation, parameters.cameraDirection);
-        }
-        else{
-            System.out.println("Error");
-        }
+        // Setup listener and inform it of phone information
+        listener = (VuforiaTrackableDefaultListener) target.getListener();
+        listener.setPhoneInformation(phoneLocation, parameters.cameraDirection);
     }
 
     // Creates a matrix for determining the locations and orientations of objects
@@ -148,5 +155,10 @@ public class VuforiaNavigationIdentificationAuto extends LinearOpMode {
     private String formatMatrix(OpenGLMatrix matrix)
     {
         return matrix.formatAsTransform();
+    }
+
+
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 }
