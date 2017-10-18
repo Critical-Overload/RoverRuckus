@@ -3,14 +3,13 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * Created by mingch on 9/9/17.
  */
 
-@TeleOp(name = "SteerDrivingOp")
-public class SteerDrivingOp extends LinearOpMode
+@TeleOp(name = "MireyaJolieTest")
+public class MireyaJolieTest extends LinearOpMode
 {
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -22,7 +21,7 @@ public class SteerDrivingOp extends LinearOpMode
     {
         motorFrontRight = hardwareMap.dcMotor.get("FrontRight2");
         motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft3");
-        motorBackRight= hardwareMap.dcMotor.get("BackRight0");
+        motorBackRight = hardwareMap.dcMotor.get("BackRight0");
         motorBackLeft = hardwareMap.dcMotor.get("BackLeft1");
 
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -31,36 +30,23 @@ public class SteerDrivingOp extends LinearOpMode
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
         double powerMod = 1.0;
-        int leftTurn = 1;
-        int rightTurn = 1;
-
-        waitForStart();
 
         while(opModeIsActive())
         {
-            if(gamepad1.right_bumper){
+            //Slow Down Button
+            if (gamepad1.right_bumper) {
                 powerMod = 0.25;
-            }else{
+            } else {
                 powerMod = 1.0;
             }
 
-            float turnDirection = gamepad1.left_stick_x;
+            //Driving
+            motorBackLeft.setPower(powerMod * gamepad1.left_stick_y);
+            motorBackRight.setPower(powerMod * gamepad1.right_stick_y);
+            motorFrontLeft.setPower(powerMod * gamepad1.left_stick_y);
+            motorFrontRight.setPower(powerMod * gamepad1.right_stick_y);
 
-            if(turnDirection == -1){
-                leftTurn = -1;
-            }else{
-                leftTurn = 1;
-            }
-            if(turnDirection == 1){
-                rightTurn = -1;
-            }else{
-                rightTurn = 1;
-            }
-            motorBackLeft.setPower(leftTurn * powerMod * gamepad1.right_stick_y);
-            motorFrontLeft.setPower(leftTurn * powerMod * gamepad1.right_stick_y);
-            motorBackRight.setPower(rightTurn * powerMod * gamepad1.right_stick_y);
-            motorFrontRight.setPower(rightTurn * powerMod * gamepad1.right_stick_y);
-
+            idle();
         }
     }
 

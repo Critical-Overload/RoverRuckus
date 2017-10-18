@@ -25,8 +25,9 @@ public class TankDrivingOp extends LinearOpMode
         motorBackRight= hardwareMap.dcMotor.get("BackRight0");
         motorBackLeft = hardwareMap.dcMotor.get("BackLeft1");
 
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+
 
         double powerMod = 1.0;
 
