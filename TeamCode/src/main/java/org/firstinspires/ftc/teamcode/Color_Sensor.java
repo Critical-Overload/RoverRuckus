@@ -26,6 +26,7 @@ public class Color_Sensor extends LinearOpMode
         float[] hsvValues = new float[3];
         final float values[] = hsvValues;
         int x = 1;
+        int y = 1;
 
         waitForStart();
 
