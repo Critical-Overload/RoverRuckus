@@ -9,5 +9,8 @@ This is our first year as a FTC team and we have a lot to learn. Before this adv
 --
 Critical Overload
 
+
+## Links
 To find more information about us go to: https://critical-overload.weebly.com/
+
 To find more information aboout our past FLL experiance go to: https://awesomebotscontinued.weebly.com/
