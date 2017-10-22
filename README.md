@@ -13,4 +13,6 @@ Critical Overload
 ## Links
 To find more information about us go to: https://critical-overload.weebly.com/
 
-To find more information aboout our past FLL experiance go to: https://awesomebotscontinued.weebly.com/
+To find more information about our past FLL experience go to: https://awesomebotscontinued.weebly.com/
+
+To learn about First go to: https://www.firstinspires.org/?gclid=CjwKCAjw4KvPBRBeEiwAIqCB-ejH4cPzt4UMp5lSbQfbNAo_VgEy7a9jWLFzUEybgl2iq9RPA5lcRxoCgkAQAvD_BwE
