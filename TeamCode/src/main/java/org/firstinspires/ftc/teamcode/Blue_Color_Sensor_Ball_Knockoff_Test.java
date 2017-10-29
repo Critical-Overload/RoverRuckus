@@ -38,7 +38,7 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
         colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
         float[] hsvValues = new float[3];
         final float values[] = hsvValues;
-        int x = 1;
+        int x = 2;
 
         waitForStart();
 
