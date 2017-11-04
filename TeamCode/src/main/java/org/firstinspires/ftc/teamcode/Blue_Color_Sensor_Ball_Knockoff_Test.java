@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
+import com.qualcomm.robotcore.hardware.Servo;
 
 
 /**
@@ -22,10 +23,12 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
     public DcMotor motorFrontLeft;
     public DcMotor motorBackRight;
     public DcMotor motorBackLeft;
+    public Servo ColorArm;
 
     @Override
     public void runOpMode () throws InterruptedException
     {
+        ColorArm = hardwareMap.servo.get("ColorArm");
 
         motorFrontRight = hardwareMap.dcMotor.get("FrontRight2");
         motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft3");
@@ -40,10 +43,17 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
         final float values[] = hsvValues;
         int x = 2;
 
+        ColorArm.setPosition(0.5);
+        sleep(5000);
+        ColorArm.setPosition(0);
+
+
         waitForStart();
 
         while(opModeIsActive())
         {
+
+
             NormalizedRGBA colors = colorSensor.getNormalizedColors();
             int color = colors.toColor();
             telemetry.addLine()

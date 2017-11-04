@@ -23,12 +23,11 @@ public class ColorArmTest extends LinearOpMode
 
         while(opModeIsActive())
         {
-            if (gamepad1.a) {
-                ColorArm.setPosition(0.5);
-            }
-            if (gamepad1.b) {
                 ColorArm.setPosition(0);
-            }
+            sleep(5000);
+                ColorArm.setPosition(0.5);
+            sleep(5000);
+
 
             idle();
         }
