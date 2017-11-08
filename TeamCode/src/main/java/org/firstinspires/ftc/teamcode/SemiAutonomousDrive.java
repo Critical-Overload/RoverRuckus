@@ -26,63 +26,67 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
 
+        /*
         double quarterpower = 0.25;
         double halfpower = 0.5;
         int fullpower = 1;
         int tenseconds = 10;
         int halfminute = 30;
         int minute = 60;
+        */
 
         waitForStart();
+        //Enter Autonous Code Here:
+
 
     }
 
-    public void DriveForward (double Power, long Time){
+    public void DriveForward (double Power, long Inches){
         motorBackLeft.setPower(Power);
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(Power);
         motorBackRight.setPower(Power);
-        sleep(Time * 100);
+        sleep((Inches/11) * 1000);
     }
 
-    public void DriveBackwards (double Power, long Time){
+    public void DriveBackwards (double Power, long Inches){
         motorBackLeft.setPower(-Power);
         motorFrontRight.setPower(-Power);
         motorFrontLeft.setPower(-Power);
         motorBackRight.setPower(-Power);
-        sleep(Time * 100);
+        sleep((Inches/11) * 1000);
     }
 
-    public void TwoSideTurnLeft (double Power, long Time){
+    public void TwoSideTurnLeft (double Power, long Inches){
         motorBackLeft.setPower(-Power);
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(-Power);
         motorBackRight.setPower(Power);
-        sleep(Time * 100);
+        sleep((Inches/11) * 1000);
     }
 
-    public void TwoSideTurnRight (double Power, long Time){
+    public void TwoSideTurnRight (double Power, long Inches){
         motorBackLeft.setPower(Power);
         motorFrontRight.setPower(-Power);
         motorFrontLeft.setPower(Power);
         motorBackRight.setPower(-Power);
-        sleep(Time * 100);
+        sleep((Inches/11) * 1000);
     }
 
-    public void OneSideTurnLeft (double Power, long Time){
+    public void OneSideTurnLeft (double Power, long Inches){
         motorBackLeft.setPower(0);
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(Power);
-        sleep(Time * 100);
+        sleep((Inches/11) * 1000);
     }
 
-    public void OneSideRightTurn (double Power, long Time){
+    public void OneSideRightTurn (double Power, long Inches){
         motorBackLeft.setPower(Power);
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(Power);
         motorBackRight.setPower(0);
-        sleep(Time * 100);
+        sleep((Inches/11) * 1000);
     }
 
 

@@ -45,10 +45,12 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
 
         ColorArm.setPosition(0.5);
         sleep(5000);
-        ColorArm.setPosition(0);
+
 
 
         waitForStart();
+
+        ColorArm.setPosition(0);
 
         while(opModeIsActive())
         {
@@ -79,15 +81,23 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
             x = Math.round(hsvValues[0]);
             if(180 < x && x < 255){
                 telemetry.addLine("Color: Blue");
-                DriveForward(1, (3/23));
+                sleep(1000);
+                DriveForward(1, 6/11);
+                CompleteStop();
+                sleep(1000);
+                DriveBackward(1, 4/11);
 
             }
-            if(x < 11 || 351 < x){
+            if(351 < x){
                 telemetry.addLine("Color: Red");
-                DriveBackwards(1, (3/23));
+                sleep(1000);
+                DriveBackward(1, 6/11);
+                CompleteStop();
+                sleep(1000);
+                DriveForward(1, 4/11);
 
             }
-            if( !((180 < x && x < 255) || (x < 11 || 351 < x))){
+            if( !((180 < x && x < 255) || (351 < x))){
                 telemetry.addLine("Color: Null");
                 CompleteStop();
 
@@ -108,7 +118,7 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
         motorBackRight.setPower(-Power);
         sleep(Time * 1000);
     }
-    public void DriveBackwards (double Power, long Time){
+    public void DriveBackward (double Power, long Time){
         motorBackLeft.setPower(Power);
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(Power);
