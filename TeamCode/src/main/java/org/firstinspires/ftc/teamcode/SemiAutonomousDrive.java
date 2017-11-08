@@ -46,7 +46,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(Power);
         motorBackRight.setPower(Power);
-        sleep((Inches/11) * 1000);
+        sleep((Inches/23) * 1000);
     }
 
     public void DriveBackwards (double Power, long Inches){
@@ -54,7 +54,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontRight.setPower(-Power);
         motorFrontLeft.setPower(-Power);
         motorBackRight.setPower(-Power);
-        sleep((Inches/11) * 1000);
+        sleep((Inches/23) * 1000);
     }
 
     public void TwoSideTurnLeft (double Power, long Inches){
@@ -62,7 +62,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(-Power);
         motorBackRight.setPower(Power);
-        sleep((Inches/11) * 1000);
+        sleep((Inches/23) * 1000);
     }
 
     public void TwoSideTurnRight (double Power, long Inches){
@@ -70,7 +70,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontRight.setPower(-Power);
         motorFrontLeft.setPower(Power);
         motorBackRight.setPower(-Power);
-        sleep((Inches/11) * 1000);
+        sleep((Inches/23) * 1000);
     }
 
     public void OneSideTurnLeft (double Power, long Inches){
@@ -78,7 +78,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontRight.setPower(Power);
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(Power);
-        sleep((Inches/11) * 1000);
+        sleep((Inches/23) * 1000);
     }
 
     public void OneSideRightTurn (double Power, long Inches){
@@ -86,7 +86,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(Power);
         motorBackRight.setPower(0);
-        sleep((Inches/11) * 1000);
+        sleep((Inches/23) * 1000);
     }
 
 
