@@ -15,6 +15,11 @@ public class SemiAutonomousDrive extends LinearOpMode {
     private DcMotor motorFrontLeft;
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
+    
+    private DcMotor liftMotor;
+    private Servo clawServo;
+    
+    private int currentPosition;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -22,9 +27,18 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft3");
         motorBackRight = hardwareMap.dcMotor.get("BackRight0");
         motorBackLeft = hardwareMap.dcMotor.get("BackLeft1");
-
+        
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
+        
+        liftMotor = hardwareMap.dcMotor.get("");
+        clawServo = hardwareMap.servo.get("");
+        
+        currentLiftPosition = 1;
+        
+        private static final double CLAW_RETRACTED = 0;
+        private static final double CLAW_PARTIAL = 0.5;
+        private static final double CLAW_EXTENDED = 1;
 
         /*
         double quarterpower = 0.25;
@@ -88,6 +102,21 @@ public class SemiAutonomousDrive extends LinearOpMode {
         motorBackRight.setPower(0);
         sleep((Inches/23) * 1000);
     }
+    
+    public void liftSeconds (double Power, long Time){
+        liftMotor.setPower(Power);
+        sleep(Time * 1000);
+    }
+    
+    public void liftSetPosition (int Position){
+        time = Math.abs(currentLiftPosition - Position);
+        liftMotor.setPower(Power);
+        //Probably not real value
+        sleep(time * 1000);
+        currentLiftPosition = Position;
+    }
+    
+    
 
 
 }
