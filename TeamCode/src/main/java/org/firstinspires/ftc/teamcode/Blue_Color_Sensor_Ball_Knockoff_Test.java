@@ -43,14 +43,14 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
         final float values[] = hsvValues;
         int x = 2;
 
-        ColorArm.setPosition(0.5);
+        ColorArm.setPosition(1);
         sleep(5000);
 
 
 
         waitForStart();
 
-        ColorArm.setPosition(0);
+        ColorArm.setPosition(0.4);
 
         while(opModeIsActive())
         {
@@ -79,13 +79,17 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
                     .addData("S", "%.3f", hsvValues[1])
                     .addData("V", "%.3f", hsvValues[2]);
             x = Math.round(hsvValues[0]);
+
             if(180 < x && x < 255){
                 telemetry.addLine("Color: Blue");
                 sleep(1000);
                 DriveForward(1, 6/11);
                 CompleteStop();
                 sleep(1000);
+                ColorArm.setPosition(1);
+                sleep(1000);
                 DriveBackward(1, 4/11);
+                break;
 
             }
             if(351 < x){
@@ -94,7 +98,10 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
                 DriveBackward(1, 6/11);
                 CompleteStop();
                 sleep(1000);
+                ColorArm.setPosition(1);
+                sleep(1000);
                 DriveForward(1, 4/11);
+                break;
 
             }
             if( !((180 < x && x < 255) || (351 < x))){

@@ -13,41 +13,44 @@ public class LiftTest extends LinearOpMode {
   
   private Servo clawServo;
   
-  private static final double CLAW_RETRACTED = 0;
-  private static final double CLAW_EXTENDED = 1;
+  double CLAW_RETRACTED = 0;
+  double CLAW_EXTENDED = 1;
   
   @Override
   
   public void runOpMode(){
   
-    liftMotor = hardwareMap.dcMotor.get("");
-    clawServo = hardwareMap.servo.get("");
-    
+    liftMotor = hardwareMap.dcMotor.get("liftMotor");
+    clawServo = hardwareMap.servo.get("clawServo");
+
+    liftMotor.setDirection(DcMotor.Direction.REVERSE);
+
     waitForStart();
     
     while(opModeIsActive()){
     
-      if(gamepad2.x){
-        clawServo.setPosition(CLAW_RETRACTED);
+      if(gamepad1.x){
+        clawServo.setPosition(0);
       }
       
-      if(gamepad2.y){
-        clawServo.setPosition(CLAW_EXTENDED);
+      if(gamepad1.y){
+        clawServo.setPosition(1);
       }
       
-      /* 
+      /*
       I think we have two options. We could do this:
       (continuous)
       (more flexible, less accurate)
-      
-      while(gamepad2.dpad_up){
-        liftMotor.setPower(-0.5);
-      }
-      
-      while(gamepad2.dpad_down){
-        liftMotor.setPower(0.5);
-      }
       */
+      
+      if(gamepad1.dpad_up) {
+        liftMotor.setPower(-0.5);
+      }else if(gamepad1.dpad_down){
+        liftMotor.setPower(0.5);
+      }else{
+        liftMotor.setPower(0);
+      }
+
       
       /* 
       Or this:

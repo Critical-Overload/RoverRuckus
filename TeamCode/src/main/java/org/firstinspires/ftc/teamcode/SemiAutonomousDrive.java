@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by mingch on 9/9/17.
@@ -18,8 +19,12 @@ public class SemiAutonomousDrive extends LinearOpMode {
     
     private DcMotor liftMotor;
     private Servo clawServo;
+
+    double CLAW_RETRACTED = 0;
+    double CLAW_PARTIAL = 0.5;
+    double CLAW_EXTENDED = 1;
     
-    private int currentPosition;
+    private int currentLiftPosition =1;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -33,12 +38,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         
         liftMotor = hardwareMap.dcMotor.get("");
         clawServo = hardwareMap.servo.get("");
-        
-        currentLiftPosition = 1;
-        
-        private static final double CLAW_RETRACTED = 0;
-        private static final double CLAW_PARTIAL = 0.5;
-        private static final double CLAW_EXTENDED = 1;
+
 
         /*
         double quarterpower = 0.25;
@@ -107,7 +107,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         liftMotor.setPower(Power);
         sleep(Time * 1000);
     }
-    
+    /*
     public void liftSetPosition (int Position){
         time = Math.abs(currentLiftPosition - Position);
         liftMotor.setPower(Power);
@@ -116,7 +116,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         currentLiftPosition = Position;
     }
     
-    
+    */
 
 
 }

@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.app.Activity;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 
