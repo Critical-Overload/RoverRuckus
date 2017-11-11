@@ -29,11 +29,11 @@ public class LiftTest extends LinearOpMode {
     
     while(opModeIsActive()){
     
-      if(gamepad1.x){
+      if(gamepad2.x){
         clawServo.setPosition(0);
       }
       
-      if(gamepad1.y){
+      if(gamepad2.y){
         clawServo.setPosition(1);
       }
       
@@ -43,7 +43,7 @@ public class LiftTest extends LinearOpMode {
       (more flexible, less accurate)
       */
       
-      if(gamepad1.dpad_up) {
+      if(gamepad2.dpad_up) {
         liftMotor.setPower(-0.5);
       }else if(gamepad1.dpad_down){
         liftMotor.setPower(0.5);
