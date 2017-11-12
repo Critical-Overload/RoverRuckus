@@ -16,21 +16,40 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 @TeleOp(name = "MusicTest")
 public class MusicTest extends LinearOpMode
 {
-    MediaPlayer myMusic;
-
+    MediaPlayer Thunder;
+    MediaPlayer Soviet;
+    MediaPlayer Ferret;
     @Override
     public void runOpMode ()
     {
-        myMusic = MediaPlayer.create(AppUtil.getInstance().getRootActivity(),  R.raw.ferret);//this, R.raw.ferret);
+        Thunder = MediaPlayer.create(AppUtil.getInstance().getRootActivity(),  R.raw.thunder);
+        Soviet = MediaPlayer.create(AppUtil.getInstance().getRootActivity(),  R.raw.soviet);
+        Ferret = MediaPlayer.create(AppUtil.getInstance().getRootActivity(),  R.raw.ferret);
 
         waitForStart();
 
         while(opModeIsActive())
         {
-            myMusic.start();
+            if(gamepad1.x){
+                Thunder.release();
+                Soviet.release();
+                Ferret.release();
+                Thunder.start();
+            }
+            if(gamepad1.y){
+                Thunder.release();
+                Soviet.release();
+                Ferret.release();
+                Soviet.start();
+            }
+            if(gamepad1.a){
+                Thunder.release();
+                Soviet.release();
+                Ferret.release();
+                Ferret.start();
+            }
             idle();
         }
-        myMusic.release();
     }
 
 }

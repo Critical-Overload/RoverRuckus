@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
 import com.qualcomm.hardware.lynx.LynxI2cColorRangeSensor;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,8 +14,8 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
-@TeleOp(name = "BlueColorSensorKnockoff")
-public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
+@TeleOp(name = "RedColorSensorKnockoff")
+public class Red_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
 {
     public LynxI2cColorRangeSensor colorSensor;
     public DcMotor motorFrontRight;
@@ -45,6 +44,8 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
 
         ColorArm.setPosition(1);
         sleep(2000);
+
+
 
         waitForStart();
 
@@ -81,24 +82,24 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
             if(180 < x && x < 255){
                 telemetry.addLine("Color: Blue");
                 sleep(1000);
-                DriveForward(1, 6/11);
-                CompleteStop();
-                sleep(1000);
-                ColorArm.setPosition(1);
-                sleep(1000);
-                DriveBackward(1, 4/11);
-                break;
-
-            }
-            if(351 < x){
-                telemetry.addLine("Color: Red");
-                sleep(1000);
                 DriveBackward(1, 6/11);
                 CompleteStop();
                 sleep(1000);
                 ColorArm.setPosition(1);
                 sleep(1000);
                 DriveForward(1, 4/11);
+                break;
+
+            }
+            if(351 < x){
+                telemetry.addLine("Color: Red");
+                sleep(1000);
+                DriveForward(1, 6/11);
+                CompleteStop();
+                sleep(1000);
+                ColorArm.setPosition(1);
+                sleep(1000);
+                DriveBackward(1, 4/11);
                 break;
 
             }
