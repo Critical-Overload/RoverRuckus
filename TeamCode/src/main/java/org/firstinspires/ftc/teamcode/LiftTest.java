@@ -30,7 +30,8 @@ public class LiftTest extends LinearOpMode {
     while(opModeIsActive()){
     
       if(gamepad2.x){
-        clawServo.setPosition(0);
+
+          clawServo.setPosition(0);
       }
       
       if(gamepad2.y){
