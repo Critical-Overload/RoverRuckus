@@ -50,7 +50,7 @@ public class SemiAutonomousDrive extends LinearOpMode {
         */
 
         waitForStart();
-        //Enter Autonous Code Here:
+        //Enter Autonomous Code Here:
 
 
     }
