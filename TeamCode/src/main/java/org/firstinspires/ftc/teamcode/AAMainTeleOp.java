@@ -80,6 +80,11 @@ public class AAMainTeleOp extends LinearOpMode
                 clawServo.setPosition(1);
             }
 
+            /*
+            If up is pressed, lift moves up.
+            If down is pressed, lift moves down.
+            */
+            
             if(gamepad2.dpad_up) {
                 liftMotor.setPower(-0.5);
             }else if(gamepad2.dpad_down){
