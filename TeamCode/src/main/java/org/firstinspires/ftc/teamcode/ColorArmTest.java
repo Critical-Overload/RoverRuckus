@@ -23,9 +23,9 @@ public class ColorArmTest extends LinearOpMode
 
         while(opModeIsActive())
         {
-                ColorArm.setPosition(1);
+                ColorArm.setPosition(0.1);
             sleep(1000);
-                ColorArm.setPosition(0.4);
+                ColorArm.setPosition(0.6);
             sleep(1000);
 
 

@@ -28,41 +28,29 @@ public class AutonomousMovementTest extends LinearOpMode {
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
 
-
         waitForStart();
 
-        driveForwardI(1, 23);
-        completeStop(1);
-        sleep(5000);
-        driveForwardI(1, 12);
-        completeStop(1);
-        sleep(5000);
-        driveForwardI(1, 3);
-        completeStop(1);
-        sleep(5000);
-        driveForwardI(1, (3/23));
-
+        driveForward(1, 3);
     }
 
-    public void driveForwardI(double power, long inches) {
+    public void driveForward(double power, double inches) {
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
-        time((inches/23)*1000);
+        double w = (inches/23)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
     }
 
-
-    public void completeStop(long seconds){
+    public void completeStop(){
         motorBackLeft.setPower(0);
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
-        time(seconds*1000);
     }
-
-    public void time (long time){
-        sleep(time);
-    }
-
 }
