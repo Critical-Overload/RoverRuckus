@@ -15,8 +15,8 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
-@TeleOp(name = "BlueColorSensorKnockoff")
-public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
+@Autonomous(name = "AARedColorSensorKnockoff")
+public class AAARed_Color_Sensor_Ball_Knockoff extends LinearOpMode
 {
     public LynxI2cColorRangeSensor colorSensor;
     public DcMotor motorFrontRight;
@@ -43,12 +43,12 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
         final float values[] = hsvValues;
         int x = 2;
 
-        ColorArm.setPosition(1);
-        sleep(2000);
+        ColorArm.setPosition(0.6);
+
 
         waitForStart();
+        ColorArm.setPosition(0.1);
 
-        ColorArm.setPosition(0.4);
 
         while(opModeIsActive())
         {
@@ -81,30 +81,30 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
             if(180 < x && x < 255){
                 telemetry.addLine("Color: Blue");
                 sleep(1000);
-                DriveForward(1, 6/11);
-                CompleteStop();
+                driveForward(1, 0.5);
+                completeStop();
                 sleep(1000);
-                ColorArm.setPosition(1);
+                ColorArm.setPosition(0.6);
                 sleep(1000);
-                DriveBackward(1, 4/11);
+                driveBackward(1, 0.5);
                 break;
 
             }
             if(351 < x){
                 telemetry.addLine("Color: Red");
                 sleep(1000);
-                DriveBackward(1, 6/11);
-                CompleteStop();
+                driveBackward(1, 0.5);
+                completeStop();
                 sleep(1000);
-                ColorArm.setPosition(1);
+                ColorArm.setPosition(0.6);
                 sleep(1000);
-                DriveForward(1, 4/11);
+                driveForward(1, 0.5);
                 break;
 
             }
             if( !((180 < x && x < 255) || (351 < x))){
                 telemetry.addLine("Color: Null");
-                CompleteStop();
+                completeStop();
 
 
             }
@@ -116,21 +116,33 @@ public class Blue_Color_Sensor_Ball_Knockoff_Test extends LinearOpMode
 
 
     }
-    public void DriveForward (double Power, long Time){
-        motorBackLeft.setPower(-Power);
-        motorFrontRight.setPower(-Power);
-        motorFrontLeft.setPower(-Power);
-        motorBackRight.setPower(-Power);
-        sleep(Time * 1000);
+    public void driveForward(double power, double inches) {
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        double w = (inches/23)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
     }
-    public void DriveBackward (double Power, long Time){
-        motorBackLeft.setPower(Power);
-        motorFrontRight.setPower(Power);
-        motorFrontLeft.setPower(Power);
-        motorBackRight.setPower(Power);
-        sleep(Time * 1000);
+    public void driveBackward(double power, double inches) {
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+        double w = (inches/23)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
     }
-    public void CompleteStop () {
+    public void completeStop () {
         motorBackLeft.setPower(0);
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
