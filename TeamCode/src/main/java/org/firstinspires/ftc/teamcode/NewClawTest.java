@@ -23,12 +23,14 @@ public class NewClawTest extends LinearOpMode{
         leftServo.setPosition(0);
         rightServo.setPosition(0);
 
+        //Technically could use servo.getPosition() method, but I didn't know about that.
         double position = 0;
 
         waitForStart();
 
         while(opModeIsActive()){
 
+            //When a is pressed, close the claw
             if(gamepad2.a) {
                 leftServo.setPosition(1);
                 rightServo.setPosition(1);
@@ -36,12 +38,14 @@ public class NewClawTest extends LinearOpMode{
 
             }
 
+            //When b is pressed, open the claw
             if(gamepad2.b) {
                 leftServo.setPosition(0);
                 rightServo.setPosition(0);
                 position = 0;
             }
 
+            //When x is held, close the claw until fully closed
             if(gamepad2.x && (position <= 1)){
                 position += 0.01;
                 leftServo.setPosition(position);
@@ -49,6 +53,7 @@ public class NewClawTest extends LinearOpMode{
 
             }
 
+            //When y is held, open the claw until fully open
             if(gamepad2.y && (position >= 0)){
                 position -= 0.01;
                 leftServo.setPosition(position);
