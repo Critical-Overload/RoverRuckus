@@ -20,7 +20,8 @@ public class AAMainTeleOp extends LinearOpMode
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
     private DcMotor liftMotor;
-    private Servo clawServo;
+    private Servo leftServo;
+    private Servo rightServo;
     public Servo ColorArm;
 
 
@@ -33,7 +34,8 @@ public class AAMainTeleOp extends LinearOpMode
         motorBackLeft = hardwareMap.dcMotor.get("BackLeft1");
 
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
-        clawServo = hardwareMap.servo.get("clawServo");
+        leftServo = hardwareMap.servo.get("leftServo");
+        rightServo = hardwareMap.servo.get("rightServo");
         ColorArm = hardwareMap.servo.get("ColorArm");
 
 
@@ -41,6 +43,9 @@ public class AAMainTeleOp extends LinearOpMode
 
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
+        
+        leftServo.setPostition(0);
+        rightServo.setPostition(0);
 
 
         double powerMod = 1.0;
@@ -72,14 +77,35 @@ public class AAMainTeleOp extends LinearOpMode
             motorFrontRight.setPower(powerMod * gamepad1.right_stick_y);
 
             //Claw And Lift
-            if(gamepad2.x){
-                clawServo.setPosition(0);
+            //When a on gamepad 2(B) is pressed, claw opens
+            if(gamepad2.a){
+                leftServo.setPosition(1);
+                rightServo.setPosition(1);
+                postion = 1;
+                
+            }
+            //When b on gamepad 2(B) is pressed, claw closes
+            if (gamepad2.b){
+                leftServo.setPostition(0);
+                rightServo.setPosition(0);
+                position = 0;
+            }
+            
+            //When x is held, close the claw until fully closed
+            if(gamepad2.x && (position <= 1)){
+                position += 0.01;
+                leftServo.setPosition(position);
+                rightServo.setPosition(position);
+
             }
 
-            if(gamepad2.y){
-                clawServo.setPosition(1);
+            //When y is held, open the claw until fully open
+            if(gamepad2.y && (position >= 0)){
+                position -= 0.01;
+                leftServo.setPosition(position);
+                rightServo.setPosition(position);
             }
-
+            
             /*
             If up is pressed, lift moves up.
             If down is pressed, lift moves down.
