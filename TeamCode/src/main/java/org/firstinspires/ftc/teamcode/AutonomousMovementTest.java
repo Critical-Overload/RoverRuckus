@@ -30,10 +30,16 @@ public class AutonomousMovementTest extends LinearOpMode {
 
         waitForStart();
 
-        driveForward(1, 3);
+        FourWheelTurnCClock(1,90);
+        sleep(500);
+        FourWheelTurnCClock(1,180);
+        sleep(500);
+        FourWheelTurnCClock(1,360);
+
     }
 
     public void driveForward(double power, double inches) {
+        power = power*0.5;
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(power);
@@ -45,6 +51,28 @@ public class AutonomousMovementTest extends LinearOpMode {
         telemetry.update();
         sleep(y);
         completeStop();
+    }
+
+    public void FourWheelTurnCClock(double power, double degrees) {
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(power);
+        double w = (degrees/180)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void driveForwardT(double power, long time){
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        sleep(time);
     }
 
     public void completeStop(){

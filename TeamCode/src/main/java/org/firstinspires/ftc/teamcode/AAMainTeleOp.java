@@ -44,8 +44,8 @@ public class AAMainTeleOp extends LinearOpMode
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
         
-        leftServo.setPostition(0);
-        rightServo.setPostition(0);
+        leftServo.setPosition(0);
+        rightServo.setPosition(0);
 
 
         double powerMod = 1.0;
@@ -53,7 +53,7 @@ public class AAMainTeleOp extends LinearOpMode
         waitForStart();
 
         ColorArm.setPosition(1);
-
+        double position = 0;
 
         while(opModeIsActive())
         {
@@ -81,12 +81,12 @@ public class AAMainTeleOp extends LinearOpMode
             if(gamepad2.a){
                 leftServo.setPosition(1);
                 rightServo.setPosition(1);
-                postion = 1;
+                position = 1;
                 
             }
             //When b on gamepad 2(B) is pressed, claw closes
             if (gamepad2.b){
-                leftServo.setPostition(0);
+                leftServo.setPosition(0);
                 rightServo.setPosition(0);
                 position = 0;
             }
@@ -95,7 +95,7 @@ public class AAMainTeleOp extends LinearOpMode
             if(gamepad2.x && (position <= 1)){
                 position += 0.01;
                 leftServo.setPosition(position);
-                rightServo.setPosition(position);
+                rightServo.setPosition(-position);
 
             }
 
@@ -103,7 +103,7 @@ public class AAMainTeleOp extends LinearOpMode
             if(gamepad2.y && (position >= 0)){
                 position -= 0.01;
                 leftServo.setPosition(position);
-                rightServo.setPosition(position);
+                rightServo.setPosition(-position);
             }
             
             /*

@@ -11,22 +11,22 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp(name = "ClawTest")
 public class ClawTest extends LinearOpMode
 {
-    private Servo ColorArm;
+    private Servo leftServo;
+    private Servo rightServo;
 
     @Override
     public void runOpMode () throws InterruptedException
     {
-        ColorArm = hardwareMap.servo.get("clawServo");
+        leftServo = hardwareMap.servo.get("leftServo");
+        rightServo = hardwareMap.servo.get("rightServo");
 
         waitForStart();
 
         while(opModeIsActive())
         {
-                ColorArm.setPosition(1);
-            sleep(1000);
-                ColorArm.setPosition(0);
-            sleep(1000);
-
+                leftServo.setPosition(0);
+                sleep(1000);
+                rightServo.setPosition(1);
 
             idle();
         }
