@@ -30,11 +30,11 @@ public class AutonomousMovementTest extends LinearOpMode {
 
         waitForStart();
 
-        FourWheelTurnCClock(1,90);
+        fourWheelTurn(1,90);
         sleep(500);
-        FourWheelTurnCClock(1,180);
+        fourWheelTurn(1,180);
         sleep(500);
-        FourWheelTurnCClock(1,360);
+        fourWheelTurn(1,360);
 
     }
 
@@ -53,7 +53,7 @@ public class AutonomousMovementTest extends LinearOpMode {
         completeStop();
     }
 
-    public void FourWheelTurnCClock(double power, double degrees) {
+    public void fourWheelTurn(double power, double degrees) {
         motorBackLeft.setPower(-power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(-power);
