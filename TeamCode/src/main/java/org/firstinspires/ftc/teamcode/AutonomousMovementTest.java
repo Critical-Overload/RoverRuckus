@@ -38,7 +38,7 @@ public class AutonomousMovementTest extends LinearOpMode {
 
     }
 
-    public void driveForward(double power, double inches) {
+    public void drive(double power, double inches) {
         power = power*0.5;
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
@@ -47,7 +47,7 @@ public class AutonomousMovementTest extends LinearOpMode {
         double w = (inches/23)*1000;
         int y = (int) Math.rint(w);
         String x = Integer.toString(y);
-        telemetry.addLine(x);
+        telemetry.addLine((power > 0 ? "Forward" : "Backward") + x + "Inches");
         telemetry.update();
         sleep(y);
         completeStop();
@@ -61,18 +61,20 @@ public class AutonomousMovementTest extends LinearOpMode {
         double w = (degrees/180)*1000;
         int y = (int) Math.rint(w);
         String x = Integer.toString(y);
-        telemetry.addLine(x);
+        telemetry.addLine((power > 0 ? "Counterclockwise" : "Clockwise") + x + "Degrees");
         telemetry.update();
         sleep(y);
         completeStop();
     }
 
-    public void driveForwardT(double power, long time){
+    public void driveTime(double power, long time){
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
-        sleep(time);
+        String x = Long.toString(time);
+        telemetry.addLine((power > 0 ? "Forwards for" : "Backwards for") + x + "seconds");
+        sleep(time * 1000);
     }
 
     public void completeStop(){
