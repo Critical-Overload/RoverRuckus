@@ -22,7 +22,7 @@ public class AAB1Auto extends LinearOpMode {
     private Servo leftServo;
     private Servo rightServo;
     private DcMotor liftMotor;
-    public Servo ColorArm;
+    public Servo colorArm;
     public LynxI2cColorRangeSensor colorSensor;
 
 
@@ -30,7 +30,7 @@ public class AAB1Auto extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        ColorArm = hardwareMap.servo.get("ColorArm");
+        colorArm = hardwareMap.servo.get("ColorArm");
         motorFrontRight = hardwareMap.dcMotor.get("FrontRight2");
         motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft3");
         motorBackRight = hardwareMap.dcMotor.get("BackRight0");
@@ -44,11 +44,10 @@ public class AAB1Auto extends LinearOpMode {
 
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
-        float[] hsvValues = new float[3];
-        final float values[] = hsvValues;
-        int x = 2;
+        
+        JewelColor jewel = new JewelColor(colorSensor);
 
-        ColorArm.setPosition(0.6);
+        colorArm.setPosition(0.6);
 
 
         closeClaw();
@@ -57,50 +56,29 @@ public class AAB1Auto extends LinearOpMode {
 
         waitForStart();
 
+        
         while(opModeIsActive()) {
-            NormalizedRGBA colors = colorSensor.getNormalizedColors();
-            int color = colors.toColor();
-            telemetry.addLine()
-                    .addData("r", "%.3f", colors.red)
-                    .addData("g", "%.3f", colors.green)
-                    .addData("b", "%.3f", colors.blue);
-            float max = Math.max(Math.max(Math.max(colors.red, colors.green), colors.blue), colors.alpha);
-            colors.red   /= max;
-            colors.green /= max;
-            colors.blue  /= max;
-            color = colors.toColor();
+            
+            char color = jewel.getColor();
 
-            telemetry.addLine("normalized color:  ")
-                    .addData("r", "%02x", Color.red(color))
-                    .addData("g", "%02x", Color.green(color))
-                    .addData("b", "%02x", Color.blue(color));
-
-            Color.colorToHSV(colors.toColor(), hsvValues);
-            telemetry.addLine()
-                    .addData("H", "%.3f", hsvValues[0])
-                    .addData("S", "%.3f", hsvValues[1])
-                    .addData("V", "%.3f", hsvValues[2]);
-            x = Math.round(hsvValues[0]);
-
-            if(180 < x && x < 255){
-                telemetry.addLine("Color: Blue");
+            if(color = 'b'){
                 sleep(1000);
                 driveBackward(1, 0.5);
                 completeStop();
                 sleep(1000);
-                ColorArm.setPosition(0.6);
+                colorArm.setPosition(0.6);
                 sleep(1000);
                 driveForward(1, 0.5);
                 break;
 
             }
-            if(351 < x){
-                telemetry.addLine("Color: Red");
+            if(color = 'r'){
+                
                 sleep(1000);
                 driveForward(1, 0.5);
                 completeStop();
                 sleep(1000);
-                ColorArm.setPosition(0.6);
+                colorArm.setPosition(0.6);
                 sleep(1000);
                 driveBackward(1, 0.5);
                 break;
