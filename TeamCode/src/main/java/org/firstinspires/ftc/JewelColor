@@ -8,12 +8,15 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
 @Autonomous
 public class JewelColor {
-    private LynxI2cColorRangeSensor colorSensor;
+    public LynxI2cColorRangeSensor colorSensor;
     
     private char jewelColor;
     
+    public JewelColor(LynxI2cColorRangeSensor colorSensor){
+        this.colorSensor = colorSensor;
+    }
+    
     public char getColor(){
-        colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
         float[] hsvValues = new float[3];
         final float values[] = hsvValues;
         int x = 2;
