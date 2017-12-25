@@ -43,9 +43,9 @@ public class AAMainTeleOp extends LinearOpMode
 
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
-        
-        leftServo.setPosition(0);
-        rightServo.setPosition(0);
+
+        leftServo.setPosition(0.2);
+        rightServo.setPosition(0.5);
 
 
         double powerMod = 1.0;
@@ -53,7 +53,7 @@ public class AAMainTeleOp extends LinearOpMode
         waitForStart();
 
         ColorArm.setPosition(1);
-        double position = 0;
+
 
         while(opModeIsActive())
         {
@@ -79,38 +79,35 @@ public class AAMainTeleOp extends LinearOpMode
             //Claw And Lift
             //When a on gamepad 2(B) is pressed, claw opens
             if(gamepad2.a){
-                leftServo.setPosition(1);
-                rightServo.setPosition(1);
-                position = 1;
-                
+                leftServo.setPosition(0.2);
+                rightServo.setPosition(0.5);
+
             }
             //When b on gamepad 2(B) is pressed, claw closes
             if (gamepad2.b){
-                leftServo.setPosition(0);
+                leftServo.setPosition(1);
                 rightServo.setPosition(0);
-                position = 0;
+
             }
-            
+
             //When x is held, close the claw until fully closed
-            if(gamepad2.x && (position <= 1)){
-                position += 0.01;
-                leftServo.setPosition(position);
-                rightServo.setPosition(-position);
+            if(gamepad2.x && leftServo.getPosition() <= 1){
+                leftServo.setPosition(leftServo.getPosition() + 0.01);
+                rightServo.setPosition(rightServo.getPosition() - 0.00625);
 
             }
 
             //When y is held, open the claw until fully open
-            if(gamepad2.y && (position >= 0)){
-                position -= 0.01;
-                leftServo.setPosition(position);
-                rightServo.setPosition(-position);
+            if(gamepad2.y && leftServo.getPosition() >= 0.2){
+                leftServo.setPosition(leftServo.getPosition() - 0.01);
+                rightServo.setPosition(rightServo.getPosition() + 0.00625);
             }
             
             /*
             If up is pressed, lift moves up.
             If down is pressed, lift moves down.
             */
-            
+
             if(gamepad2.dpad_up) {
                 liftMotor.setPower(-0.5);
             }else if(gamepad2.dpad_down){

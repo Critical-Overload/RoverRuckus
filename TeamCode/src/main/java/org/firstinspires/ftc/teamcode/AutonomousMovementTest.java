@@ -30,15 +30,20 @@ public class AutonomousMovementTest extends LinearOpMode {
 
         waitForStart();
 
-        fourWheelTurn(1,90);
+
+        driveForward(1,10);
+        sleep(3000);
+        driveForward(1,3);
+        sleep(3000);
+        fourWheelTurnCClock(1,90);
         sleep(500);
-        fourWheelTurn(1,180);
+        fourWheelTurnCClock(1,180);
         sleep(500);
-        fourWheelTurn(1,360);
+        fourWheelTurnCClock(1,360);
 
     }
 
-    public void drive(double power, double inches) {
+    public void driveForward(double power, double inches) {
         power = power*0.5;
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
@@ -47,13 +52,13 @@ public class AutonomousMovementTest extends LinearOpMode {
         double w = (inches/23)*1000;
         int y = (int) Math.rint(w);
         String x = Integer.toString(y);
-        telemetry.addLine((power > 0 ? "Forward" : "Backward") + x + "Inches");
+        telemetry.addLine(x);
         telemetry.update();
         sleep(y);
         completeStop();
     }
 
-    public void fourWheelTurn(double power, double degrees) {
+    public void fourWheelTurnCClock(double power, double degrees) {
         motorBackLeft.setPower(-power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(-power);
@@ -61,20 +66,18 @@ public class AutonomousMovementTest extends LinearOpMode {
         double w = (degrees/180)*1000;
         int y = (int) Math.rint(w);
         String x = Integer.toString(y);
-        telemetry.addLine((power > 0 ? "Counterclockwise" : "Clockwise") + x + "Degrees");
+        telemetry.addLine(x);
         telemetry.update();
         sleep(y);
         completeStop();
     }
 
-    public void driveTime(double power, long time){
+    public void driveForwardT(double power, long time){
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
-        String x = Long.toString(time);
-        telemetry.addLine((power > 0 ? "Forwards for" : "Backwards for") + x + "seconds");
-        sleep(time * 1000);
+        sleep(time);
     }
 
     public void completeStop(){
