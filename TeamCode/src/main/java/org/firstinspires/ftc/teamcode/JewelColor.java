@@ -12,6 +12,10 @@ public class JewelColor{
     private LynxI2cColorRangeSensor colorSensor;
 
     private char jewelColor;
+    
+    public JewelColor(LynxI2cColorRangeSensor colorSensor){
+        this.colorSensor = colorSensor;
+    }
 
     public char getColor(){
         float[] hsvValues = new float[3];
@@ -34,10 +38,13 @@ public class JewelColor{
 
         if(180 < x && x < 255){
             jewelColor = 'b';
+            telemetry.addLine("Color: Blue");
         }else if(351 < x){
             jewelColor = 'r';
+            telemetry.addLine("Color: Red");
         }else{
             jewelColor = 'n';
+            telemetry.addLine("Color: Null");
         }
 
         return jewelColor;

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hadware.Servo;
 
 /**
  * Created by mingch on 12/26/17.
@@ -12,6 +13,20 @@ public class DriveControl{
     private DcMotor motorFrontLeft;
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
+    private Servo leftServo;
+    private Servo rightServo;
+    private DcMotor liftMotor;
+    
+    public DriveControl(DcMotor motorFrontRight, DcMotor motorFrontLeft, DcMotor motorBackRight, DcMotor motorBackLeft, 
+                        Servo leftServo, Servo rightServo, DcMotor liftMotor){
+        this.motorFrontRight = motorFrontRight;
+        this.motorFrontLeft = motorFrontLeft;
+        this.motorBackRight = motorBackRight;
+        this.motorBackLeft = motorBackLeft;
+        this.leftServo = leftServo;
+        this.rightServo = rightServo;
+        this.liftMotor = liftMotor;
+    }
 
     public void drive(double power, double inches) {
         power = power*0.5;
@@ -40,13 +55,13 @@ public class DriveControl{
         completeStop();
     }
 
-    public void driveTime(double power, long time){
+    public void driveTime(double power, long seconds){
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(power);
         motorBackRight.setPower(power);
-        String x = Long.toString(time);
-        sleep(time * 1000);
+        String x = Long.toString(seconds);
+        sleep(seconds * 1000);
     }
 
     public void completeStop(){
@@ -56,7 +71,27 @@ public class DriveControl{
         motorBackRight.setPower(0);
     }
 
-    public void sleep(long milliseconds) {
+    public void wait(long seconds){
+        sleep(seconds * 1000);
+    }
+     
+    public void closeClaw(){
+        leftServo.setPosition(1);
+        rightServo.setPosition(0);
+    }
+
+    public void openClaw(){
+        leftServo.setPosition(0.5);
+        rightServo.setPosition(0.2);
+    }
+    
+    public void moveLift(double power, long seconds){
+        liftMotor.setPower(power);
+        sleep(seconds * 1000);
+        liftMotor.setPower(0);
+    }
+    
+    private void sleep(long milliseconds) {
         try {
             Thread.sleep(milliseconds);
         } catch (InterruptedException e) {
@@ -65,4 +100,5 @@ public class DriveControl{
     }
 
 }
+
 

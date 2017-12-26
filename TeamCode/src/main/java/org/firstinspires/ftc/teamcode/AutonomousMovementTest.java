@@ -17,7 +17,7 @@ public class AutonomousMovementTest extends LinearOpMode {
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
 
-    DriveControl Move = new DriveControl();
+    DriveControl move = new DriveControl();
 
 
     @Override
@@ -32,7 +32,7 @@ public class AutonomousMovementTest extends LinearOpMode {
 
         waitForStart();
 
-        Move.drive(1,10);
+        move.drive(1,10);
 
         fourWheelTurn(1,90);
         sleep(500);
@@ -42,49 +42,5 @@ public class AutonomousMovementTest extends LinearOpMode {
 
     }
 
-    public void drive(double power, double inches) {
-        power = power*0.5;
-        motorBackLeft.setPower(power);
-        motorFrontRight.setPower(power);
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(power);
-        double w = (inches/23)*1000;
-        int y = (int) Math.rint(w);
-        String x = Integer.toString(y);
-        telemetry.addLine((power > 0 ? "Forward" : "Backward") + x + "Inches");
-        telemetry.update();
-        sleep(y);
-        completeStop();
-    }
-
-    public void fourWheelTurn(double power, double degrees) {
-        motorBackLeft.setPower(-power);
-        motorFrontRight.setPower(power);
-        motorFrontLeft.setPower(-power);
-        motorBackRight.setPower(power);
-        double w = (degrees/180)*1000;
-        int y = (int) Math.rint(w);
-        String x = Integer.toString(y);
-        telemetry.addLine((power > 0 ? "Counterclockwise" : "Clockwise") + x + "Degrees");
-        telemetry.update();
-        sleep(y);
-        completeStop();
-    }
-
-    public void driveTime(double power, long time){
-        motorBackLeft.setPower(power);
-        motorFrontRight.setPower(power);
-        motorFrontLeft.setPower(power);
-        motorBackRight.setPower(power);
-        String x = Long.toString(time);
-        telemetry.addLine((power > 0 ? "Forwards for" : "Backwards for") + x + "seconds");
-        sleep(time * 1000);
-    }
-
-    public void completeStop(){
-        motorBackLeft.setPower(0);
-        motorFrontRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-    }
+    
 }
