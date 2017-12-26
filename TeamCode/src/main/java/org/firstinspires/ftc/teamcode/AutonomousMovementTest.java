@@ -17,8 +17,6 @@ public class AutonomousMovementTest extends LinearOpMode {
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
 
-    DriveControl move = new DriveControl();
-
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -32,15 +30,60 @@ public class AutonomousMovementTest extends LinearOpMode {
 
         waitForStart();
 
-        move.drive(1,10);
 
-        fourWheelTurn(1,90);
+        driveForward(1,10);
+        sleep(3000);
+        driveForward(1,3);
+        sleep(3000);
+        fourWheelTurnCClock(1,90);
         sleep(500);
-        fourWheelTurn(1,180);
+        fourWheelTurnCClock(1,180);
         sleep(500);
-        fourWheelTurn(1,360);
+        fourWheelTurnCClock(1,360);
 
     }
 
-    
+    public void driveForward(double power, double inches) {
+        power = power*0.5;
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        double w = (inches/23)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void fourWheelTurnCClock(double power, double degrees) {
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(power);
+        double w = (degrees/180)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void driveForwardT(double power, long time){
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        sleep(time);
+    }
+
+    public void completeStop(){
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+    }
 }
