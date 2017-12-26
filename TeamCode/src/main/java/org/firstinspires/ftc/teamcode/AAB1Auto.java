@@ -45,7 +45,7 @@ public class AAB1Auto extends LinearOpMode {
         rightServo = hardwareMap.servo.get("rightServo");
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         
-        DriveControl robot = new DriveControl(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft, 
+        DriveControl robot = new DriveControl(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft,
                                               leftServo, rightServo, liftMotor);
         
         colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
@@ -57,7 +57,7 @@ public class AAB1Auto extends LinearOpMode {
 
         robot.closeClaw();
         robot.wait(5);
-        robot.liftMovement(1, 0.1);
+        robot.moveLift(1, 0.1);
 
         waitForStart();
 
@@ -104,5 +104,6 @@ public class AAB1Auto extends LinearOpMode {
         robot.drive(1,36);
 
     }
+}
 
     

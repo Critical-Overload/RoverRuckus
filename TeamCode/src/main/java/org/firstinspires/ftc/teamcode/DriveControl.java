@@ -2,7 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hadware.Servo;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /**
  * Created by mingch on 12/26/17.
@@ -71,7 +71,7 @@ public class DriveControl{
         motorBackRight.setPower(0);
     }
 
-    public void wait(long seconds){
+    public void seconds(long seconds){
         sleep(seconds * 1000);
     }
      
@@ -85,9 +85,10 @@ public class DriveControl{
         rightServo.setPosition(0.2);
     }
     
-    public void moveLift(double power, long seconds){
+    public void moveLift(double power, double seconds){
         liftMotor.setPower(power);
-        sleep(seconds * 1000);
+        long y = (int) Math.rint(seconds*1000);
+        sleep(y);
         liftMotor.setPower(0);
     }
     
