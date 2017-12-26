@@ -8,14 +8,12 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
-import org.firstinspires.ftc.teamcode.JewelColor;
-import org.firstinspires.ftc.teamcode.DriveControl;
 
 /**
  * Created by mingch on 9/9/17.
  */
 
-@Autonomous(name = "AAB1Auto")
+@Autonomous(name = "B1AutonomousMovement")
 public class AAB1Auto extends LinearOpMode {
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -43,11 +41,8 @@ public class AAB1Auto extends LinearOpMode {
 
         leftServo = hardwareMap.servo.get("leftServo");
         rightServo = hardwareMap.servo.get("rightServo");
+
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
-        
-        DriveControl robot = new DriveControl(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft,
-                                              leftServo, rightServo, liftMotor);
-        
         colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
         
         JewelColor jewel = new JewelColor(colorSensor);
@@ -55,9 +50,9 @@ public class AAB1Auto extends LinearOpMode {
         colorArm.setPosition(0.6);
 
 
-        robot.closeClaw();
-        robot.wait(5);
-        robot.moveLift(1, 0.1);
+        closeClaw();
+        sleep(500);
+        liftMovement(1, 100);
 
         waitForStart();
 
@@ -66,31 +61,32 @@ public class AAB1Auto extends LinearOpMode {
             
             char color = jewel.getColor();
 
-            if(color == 'b'){
-                robot.wait(1);
-                robot.drive(-1, 0.5);
-                robot.completeStop();
-                robot.wait(1);
+            if(color = 'b'){
+                sleep(1000);
+                driveBackward(1, 0.5);
+                completeStop();
+                sleep(1000);
                 colorArm.setPosition(0.6);
-                robot.wait(1);
-                robot.drive(1, 0.5);
+                sleep(1000);
+                driveForward(1, 0.5);
                 break;
 
             }
-            if(color == 'r'){
+            if(color = 'r'){
                 
-                robot.wait(1);
-                robot.drive(1, 0.5);
-                robot.completeStop();
-                robot.wait(1);
+                sleep(1000);
+                driveForward(1, 0.5);
+                completeStop();
+                sleep(1000);
                 colorArm.setPosition(0.6);
-                robot.wait(1);
-                robot.drive(-1, 0.5);
+                sleep(1000);
+                driveBackward(1, 0.5);
                 break;
 
             }
-            if( !((color == 'r') || (color == 'b'))){
-                robot.completeStop();
+            if( !((180 < x && x < 255) || (351 < x))){
+                telemetry.addLine("Color: Null");
+                completeStop();
 
 
             }
@@ -100,10 +96,94 @@ public class AAB1Auto extends LinearOpMode {
             idle();
         }
 
-        robot.fourWheelTurn(0.5 ,30);
-        robot.drive(1,36);
+        fourWheelTurnClock(0.5 ,30);
+        driveForward(1,36);
 
     }
-}
 
-    
+    public void driveForward(double power, double inches) {
+        power = power*0.5;
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        double w = (inches/23)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void fourWheelTurnCClock(double power, double degrees) {
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(power);
+        double w = (degrees/180)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void fourWheelTurnClock(double power, double degrees) {
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(-power);
+        double w = (degrees/180)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void driveForwardT(double power, long time){
+        motorBackLeft.setPower(power);
+        motorFrontRight.setPower(power);
+        motorFrontLeft.setPower(power);
+        motorBackRight.setPower(power);
+        sleep(time);
+    }
+    public void driveBackward(double power, double inches) {
+        motorBackLeft.setPower(-power);
+        motorFrontRight.setPower(-power);
+        motorFrontLeft.setPower(-power);
+        motorBackRight.setPower(-power);
+        double w = (inches/23)*1000;
+        int y = (int) Math.rint(w);
+        String x = Integer.toString(y);
+        telemetry.addLine(x);
+        telemetry.update();
+        sleep(y);
+        completeStop();
+    }
+
+    public void completeStop(){
+        motorBackLeft.setPower(0);
+        motorFrontRight.setPower(0);
+        motorFrontLeft.setPower(0);
+        motorBackRight.setPower(0);
+    }
+
+    public void closeClaw(){
+        leftServo.setPosition(1);
+        rightServo.setPosition(0);
+    }
+
+    public void openClaw(){
+        leftServo.setPosition(0.5);
+        rightServo.setPosition(0.2);
+    }
+    public void liftMovement(double power, long time){
+        liftMotor.setPower(power);
+        sleep(time);
+        completeStop();
+    }
+}
