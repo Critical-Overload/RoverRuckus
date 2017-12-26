@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
+import org.firstinspires.ftc.teamcode.JewelColor;
 
 /**
  * Created by mingch on 9/9/17.
@@ -24,6 +25,8 @@ public class AAB1Auto extends LinearOpMode {
     private DcMotor liftMotor;
     public Servo colorArm;
     public LynxI2cColorRangeSensor colorSensor;
+
+    DriveControl Drive = new DriveControl();
 
 
     @Override
@@ -45,7 +48,7 @@ public class AAB1Auto extends LinearOpMode {
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
         
-        JewelColor jewel = new JewelColor(colorSensor);
+        JewelColor jewel = new JewelColor();
 
         colorArm.setPosition(0.6);
 
@@ -61,7 +64,7 @@ public class AAB1Auto extends LinearOpMode {
             
             char color = jewel.getColor();
 
-            if(color = 'b'){
+            if(color == 'b'){
                 sleep(1000);
                 driveBackward(1, 0.5);
                 completeStop();
@@ -72,7 +75,7 @@ public class AAB1Auto extends LinearOpMode {
                 break;
 
             }
-            if(color = 'r'){
+            if(color == 'r'){
                 
                 sleep(1000);
                 driveForward(1, 0.5);
@@ -84,7 +87,7 @@ public class AAB1Auto extends LinearOpMode {
                 break;
 
             }
-            if( !((180 < x && x < 255) || (351 < x))){
+            if( !((color == 'r') || (color == 'b'))){
                 telemetry.addLine("Color: Null");
                 completeStop();
 
