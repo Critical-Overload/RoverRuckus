@@ -106,7 +106,7 @@ public class AAR1Auto extends LinearOpMode {
         }
 
         robot.fourWheelTurn(0.5 ,32);
-        robot.drive(1,17);
+        robot.drive(-1,17);
         robot.fourWheelTurn(0.5, 180);
         robot.drive(1, 16);
         robot.openClaw();
