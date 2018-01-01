@@ -38,13 +38,13 @@ public class JewelColor{
 
         if(180 < x && x < 255){
             jewelColor = 'b';
-            telemetry.addLine("Color: Blue");
+            //telemetry.addLine("Color: Blue");
         }else if(351 < x){
             jewelColor = 'r';
-            telemetry.addLine("Color: Red");
+            //telemetry.addLine("Color: Red");
         }else{
             jewelColor = 'n';
-            telemetry.addLine("Color: Null");
+            //telemetry.addLine("Color: Null");
         }
 
         return jewelColor;

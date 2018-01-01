@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
@@ -16,8 +15,11 @@ public class AutonomousMovementTest extends LinearOpMode {
     private DcMotor motorFrontLeft;
     private DcMotor motorBackRight;
     private DcMotor motorBackLeft;
+    private DcMotor liftMotor;
+    private Servo leftServo;
+    private Servo rightServo;
 
-    DriveControl move = new DriveControl();
+    DriveControl move = new DriveControl(motorFrontRight,motorFrontLeft,motorBackRight,motorBackLeft,leftServo,rightServo,liftMotor);
 
 
     @Override
@@ -34,11 +36,11 @@ public class AutonomousMovementTest extends LinearOpMode {
 
         move.drive(1,10);
 
-        fourWheelTurn(1,90);
+        move.fourWheelTurn(1, 90);
         sleep(500);
-        fourWheelTurn(1,180);
+        move.fourWheelTurn(1,180);
         sleep(500);
-        fourWheelTurn(1,360);
+        move.fourWheelTurn(1,360);
 
     }
 
