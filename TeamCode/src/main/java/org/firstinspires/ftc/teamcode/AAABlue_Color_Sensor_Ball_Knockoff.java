@@ -47,7 +47,7 @@ public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
 
         waitForStart();
 
-        ColorArm.setPosition(0.1);
+        ColorArm.setPosition(0);
 
 
         while(opModeIsActive())

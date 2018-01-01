@@ -15,8 +15,8 @@ import org.firstinspires.ftc.teamcode.DriveControl;
  * Created by mingch on 9/9/17.
  */
 
-@Autonomous(name = "AAB1Auto")
-public class AAB1Auto extends LinearOpMode {
+@Autonomous(name = "AAR1Auto")
+public class AAR1Auto extends LinearOpMode {
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
     private DcMotor motorBackRight;
@@ -44,12 +44,12 @@ public class AAB1Auto extends LinearOpMode {
         leftServo = hardwareMap.servo.get("leftServo");
         rightServo = hardwareMap.servo.get("rightServo");
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
-        
+
         DriveControl robot = new DriveControl(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft,
-                                              leftServo, rightServo, liftMotor);
-        
+                leftServo, rightServo, liftMotor);
+
         colorSensor = (LynxI2cColorRangeSensor) hardwareMap.get("ColorSensor0");
-        
+
         JewelColor jewel = new JewelColor(colorSensor);
 
         colorArm.setPosition(0.5);
@@ -72,7 +72,7 @@ public class AAB1Auto extends LinearOpMode {
             telemetry.addLine(Character.toString(color));
             telemetry.update();
 
-            if(color == 'b'){
+            if(color == 'r'){
                 robot.waitFor(1);
                 robot.drive(1, 2);
                 robot.completeStop();
@@ -83,8 +83,8 @@ public class AAB1Auto extends LinearOpMode {
                 break;
 
             }
-            if(color == 'r'){
-                
+            if(color == 'b'){
+
                 robot.waitFor(1);
                 robot.drive(-1, 2);
                 robot.completeStop();
@@ -105,12 +105,14 @@ public class AAB1Auto extends LinearOpMode {
             idle();
         }
 
-        robot.fourWheelTurn(-0.5 ,32);
-        robot.drive(1,33);
+        robot.fourWheelTurn(0.5 ,32);
+        robot.drive(1,17);
+        robot.fourWheelTurn(0.5, 180);
+        robot.drive(1, 16);
         robot.openClaw();
         robot.drive(1, 4);
 
     }
 }
 
-    
+
