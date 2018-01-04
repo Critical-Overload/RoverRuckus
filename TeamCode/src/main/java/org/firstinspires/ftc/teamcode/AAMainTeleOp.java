@@ -36,7 +36,7 @@ public class AAMainTeleOp extends LinearOpMode
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         leftServo = hardwareMap.servo.get("leftServo");
         rightServo = hardwareMap.servo.get("rightServo");
-        ColorArm = hardwareMap.servo.get("ColorArm");
+        colorArm = hardwareMap.servo.get("ColorArm");
 
 
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -52,12 +52,14 @@ public class AAMainTeleOp extends LinearOpMode
 
         waitForStart();
 
-        ColorArm.setPosition(1);
+        colorArm.setPosition(1);
 
 
         while(opModeIsActive())
         {
-            ColorArm.setPosition(1);
+            //Resets color sensor arm after autonomous
+            
+            colorArm.setPosition(1);
 
             //Driving
 
@@ -71,19 +73,24 @@ public class AAMainTeleOp extends LinearOpMode
                 powerMod = 1.0;
             }
 
+            /*
+            Power of motors on left side are set to the y-value of the left stick.
+            Power of motors on right side are set to the y-value of the right stick. 
+            */
+            
             motorBackLeft.setPower(powerMod * gamepad1.left_stick_y);
             motorFrontLeft.setPower(powerMod * gamepad1.left_stick_y);
             motorBackRight.setPower(powerMod * gamepad1.right_stick_y);
             motorFrontRight.setPower(powerMod * gamepad1.right_stick_y);
 
             //Claw And Lift
-            //When a on gamepad 2(B) is pressed, claw opens
+            //When a on gamepad 2 is pressed, claw fully opens
             if(gamepad2.a){
                 leftServo.setPosition(0.2);
                 rightServo.setPosition(0.5);
 
             }
-            //When b on gamepad 2(B) is pressed, claw closes
+            //When b on gamepad 2 is pressed, claw fully closes
             if (gamepad2.b){
                 leftServo.setPosition(1);
                 rightServo.setPosition(0);
