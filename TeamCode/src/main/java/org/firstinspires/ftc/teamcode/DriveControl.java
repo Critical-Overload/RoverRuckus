@@ -44,10 +44,12 @@ public class DriveControl{
     }
 
     public void fourWheelTurn(double power, double degrees) {
+        //CounterClockwise
         motorBackLeft.setPower(-power);
         motorFrontRight.setPower(power);
         motorFrontLeft.setPower(-power);
         motorBackRight.setPower(power);
+        double a = power;
         double w = (degrees/180)*1000;
         int y = (int) Math.rint(w);
         String x = Integer.toString(y);

@@ -24,7 +24,7 @@ public class AAR1Auto extends LinearOpMode {
     private Servo leftServo;
     private Servo rightServo;
     private DcMotor liftMotor;
-    public Servo colorArm;
+    public Servo ColorArm;
     public LynxI2cColorRangeSensor colorSensor;
 
 
@@ -32,7 +32,7 @@ public class AAR1Auto extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        colorArm = hardwareMap.servo.get("ColorArm");
+        ColorArm = hardwareMap.servo.get("ColorArm");
         motorFrontRight = hardwareMap.dcMotor.get("FrontRight2");
         motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft3");
         motorBackRight = hardwareMap.dcMotor.get("BackRight0");
@@ -52,7 +52,7 @@ public class AAR1Auto extends LinearOpMode {
 
         JewelColor jewel = new JewelColor(colorSensor);
 
-        colorArm.setPosition(0.5);
+        ColorArm.setPosition(0.5);
 
         robot.closeClaw();
         robot.waitFor(3);
@@ -60,14 +60,14 @@ public class AAR1Auto extends LinearOpMode {
 
         waitForStart();
 
-        colorArm.setPosition(0.1);
+        ColorArm.setPosition(0.1);
 
 
 
 
         while(opModeIsActive()) {
 
-            colorArm.setPosition(0.1);
+            ColorArm.setPosition(0.1);
             char color = jewel.getColor();
             telemetry.addLine(Character.toString(color));
             telemetry.update();
@@ -77,7 +77,7 @@ public class AAR1Auto extends LinearOpMode {
                 robot.drive(1, 2);
                 robot.completeStop();
                 robot.waitFor(1);
-                colorArm.setPosition(0.6);
+                ColorArm.setPosition(0.6);
                 robot.waitFor(1);
                 robot.drive(-1, 2);
                 break;
@@ -89,7 +89,7 @@ public class AAR1Auto extends LinearOpMode {
                 robot.drive(-1, 2);
                 robot.completeStop();
                 robot.waitFor(1);
-                colorArm.setPosition(0.6);
+                ColorArm.setPosition(0.6);
                 robot.waitFor(1);
                 robot.drive(1, 2);
                 break;
@@ -105,12 +105,11 @@ public class AAR1Auto extends LinearOpMode {
             idle();
         }
 
-        robot.fourWheelTurn(0.5 ,32);
-        robot.drive(-1,17);
-        robot.fourWheelTurn(0.5, 180);
-        robot.drive(1, 16);
+        robot.drive(-1,29);
+        robot.fourWheelTurn(-1,170);
+        robot.drive(1,20);
         robot.openClaw();
-        robot.drive(1, 4);
+        robot.drive(1, 2);
 
     }
 }

@@ -36,7 +36,7 @@ public class AAMainTeleOp extends LinearOpMode
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         leftServo = hardwareMap.servo.get("leftServo");
         rightServo = hardwareMap.servo.get("rightServo");
-        colorArm = hardwareMap.servo.get("ColorArm");
+        ColorArm = hardwareMap.servo.get("ColorArm");
 
 
         liftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -52,14 +52,14 @@ public class AAMainTeleOp extends LinearOpMode
 
         waitForStart();
 
-        colorArm.setPosition(1);
+        ColorArm.setPosition(1);
 
 
         while(opModeIsActive())
         {
             //Resets color sensor arm after autonomous
             
-            colorArm.setPosition(1);
+            ColorArm.setPosition(1);
 
             //Driving
 
