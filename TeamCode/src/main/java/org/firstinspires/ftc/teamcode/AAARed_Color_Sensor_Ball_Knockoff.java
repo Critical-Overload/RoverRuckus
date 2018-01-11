@@ -10,11 +10,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
-/**
- * Created by mingch on 9/9/17.
- */
-
 /*
 First Test Autonomous Route to knockoff the Blue Ball
  */

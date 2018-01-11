@@ -10,10 +10,6 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 
 import java.util.Locale;
 
-/**
- * Created by mingch on 9/10/17.
- */
-
 /*
 Side Project to try to use the Android Text to Speech functionality
  */

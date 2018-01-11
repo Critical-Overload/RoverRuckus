@@ -6,10 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/**
- * Created by mingch on 9/9/17.
- */
-
 /*
 Previous Main Autonomous Op Mode
  */

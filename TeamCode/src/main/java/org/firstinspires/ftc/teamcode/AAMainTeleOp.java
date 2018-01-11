@@ -7,9 +7,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/**
- * Created by mingch on 9/9/17.
- */
 
 @TeleOp(name = "AAMainTeleOp")
 public class AAMainTeleOp extends LinearOpMode

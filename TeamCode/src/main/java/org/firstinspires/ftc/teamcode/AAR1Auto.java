@@ -11,10 +11,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.JewelColor;
 import org.firstinspires.ftc.teamcode.DriveControl;
 
-/**
- * Created by mingch on 9/9/17.
- */
-
 @Autonomous(name = "AAR1Auto")
 public class AAR1Auto extends LinearOpMode {
     private DcMotor motorFrontRight;

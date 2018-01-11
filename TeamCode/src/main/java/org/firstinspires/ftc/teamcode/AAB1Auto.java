@@ -11,10 +11,6 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.JewelColor;
 import org.firstinspires.ftc.teamcode.DriveControl;
 
-/**
- * Created by mingch on 9/9/17.
- */
-
 /*
 Main Autonomous Route for Blue Side
  */

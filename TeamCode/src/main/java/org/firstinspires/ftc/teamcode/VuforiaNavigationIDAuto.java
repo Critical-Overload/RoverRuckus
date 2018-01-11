@@ -24,7 +24,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.util.Locale;
 
 /*
-Vuforia Concept for our team to detect Pictographs
+Vuforia Concept Code for our team to detect Pictographs
  */
 @Autonomous(name = "VuforiaNavIDAuto")
 public class VuforiaNavigationIDAuto extends LinearOpMode {
@@ -80,9 +80,6 @@ public class VuforiaNavigationIDAuto extends LinearOpMode {
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(target);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
 
-                /* Found an instance of the template. In the actual game, you will probably
-                 * loop until this condition occurs, then move on to act accordingly depending
-                 * on which VuMark was visible. */
                 telemetry.addData("VuMark", "%s visible", vuMark);
 
                 ttsobject.speak(vuMark.toString(), TextToSpeech.QUEUE_FLUSH, null, null);
@@ -141,8 +138,6 @@ public class VuforiaNavigationIDAuto extends LinearOpMode {
         listener.setPhoneInformation(phoneLocation, parameters.cameraDirection);
     }
 
-    // Creates a matrix for determining the locations and orientations of objects
-    // Units are millimeters for x, y, and z, and degrees for u, v, and w
     private OpenGLMatrix createMatrix(float x, float y, float z, float u, float v, float w)
     {
         return OpenGLMatrix.translation(x, y, z).
@@ -150,7 +145,6 @@ public class VuforiaNavigationIDAuto extends LinearOpMode {
                         AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, u, v, w));
     }
 
-    // Formats a matrix into a readable string
     private String formatMatrix(OpenGLMatrix matrix)
     {
         return matrix.formatAsTransform();

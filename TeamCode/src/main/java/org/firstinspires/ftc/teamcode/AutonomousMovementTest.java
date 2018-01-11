@@ -5,10 +5,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-/**
- * Created by mingch on 9/9/17.
- */
-
 /*
 Main Code to test different types of way to model movement
  */
