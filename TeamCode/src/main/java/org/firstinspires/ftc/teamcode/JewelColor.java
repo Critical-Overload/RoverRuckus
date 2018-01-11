@@ -7,6 +7,9 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.NormalizedRGBA;
 
+/*
+Our Color Detection Class
+ */
 @Autonomous(name = "JewelColor")
 public class JewelColor{
     private LynxI2cColorRangeSensor colorSensor;

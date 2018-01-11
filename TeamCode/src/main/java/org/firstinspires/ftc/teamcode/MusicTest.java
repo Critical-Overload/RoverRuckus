@@ -13,6 +13,10 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Side Project to play music from the Android Phone
+ */
+
 @TeleOp(name = "MusicTest")
 public class MusicTest extends LinearOpMode
 {

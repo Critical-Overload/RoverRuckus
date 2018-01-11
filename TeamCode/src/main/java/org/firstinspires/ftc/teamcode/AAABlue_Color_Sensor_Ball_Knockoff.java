@@ -15,6 +15,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
+/*
+First Test Autonomous Route to knockoff the Red Ball
+ */
+
 @Autonomous(name = "AARBlueColorSensorKnockoff")
 public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
 {
@@ -78,6 +82,7 @@ public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
                     .addData("V", "%.3f", hsvValues[2]);
             x = Math.round(hsvValues[0]);
 
+            //If Detect Blue
             if(180 < x && x < 255){
                 telemetry.addLine("Color: Blue");
                 sleep(1000);
@@ -90,6 +95,8 @@ public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
                 break;
 
             }
+
+            //If Detect Red
             if(351 < x){
                 telemetry.addLine("Color: Red");
                 sleep(1000);
@@ -102,6 +109,8 @@ public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
                 break;
 
             }
+
+            //If Nothing
             if( !((180 < x && x < 255) || (351 < x))){
                 telemetry.addLine("Color: Null");
                 completeStop();

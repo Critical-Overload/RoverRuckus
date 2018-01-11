@@ -14,6 +14,10 @@ import com.qualcomm.robotcore.hardware.NormalizedRGBA;
  * Created by mingch on 9/9/17.
  */
 
+/*
+First Test of Color Sensor
+ */
+
 @TeleOp(name = "Color_Sensor")
 public class Color_Sensor extends LinearOpMode
 {

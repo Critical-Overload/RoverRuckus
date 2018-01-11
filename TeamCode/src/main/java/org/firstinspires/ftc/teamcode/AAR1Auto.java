@@ -24,7 +24,7 @@ public class AAR1Auto extends LinearOpMode {
     private Servo leftServo;
     private Servo rightServo;
     private DcMotor liftMotor;
-    public Servo ColorArm;
+    public Servo colorArm;
     public LynxI2cColorRangeSensor colorSensor;
 
 
@@ -32,7 +32,7 @@ public class AAR1Auto extends LinearOpMode {
 
     public void runOpMode() throws InterruptedException {
 
-        ColorArm = hardwareMap.servo.get("ColorArm");
+        colorArm = hardwareMap.servo.get("ColorArm");
         motorFrontRight = hardwareMap.dcMotor.get("FrontRight2");
         motorFrontLeft = hardwareMap.dcMotor.get("FrontLeft3");
         motorBackRight = hardwareMap.dcMotor.get("BackRight0");
@@ -45,6 +45,11 @@ public class AAR1Auto extends LinearOpMode {
         rightServo = hardwareMap.servo.get("rightServo");
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
 
+        /*
+        DriveControl is our driving class.
+        JewelColor is our class for detecting the color of the ball.
+         */
+
         DriveControl robot = new DriveControl(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft,
                 leftServo, rightServo, liftMotor);
 
@@ -52,44 +57,55 @@ public class AAR1Auto extends LinearOpMode {
 
         JewelColor jewel = new JewelColor(colorSensor);
 
-        ColorArm.setPosition(0.5);
+        /*
+        Procedures after initialization, before start:
+        Set color arm servo to up position.
+        Close the claw and lift to grab the starting glyph.
+         */
+
+        colorArm.setPosition(0.5);
 
         robot.closeClaw();
         robot.waitFor(3);
-        robot.moveLift(1, 0.1);
+        robot.moveLift(1, 0.2);
 
         waitForStart();
 
-        ColorArm.setPosition(0.1);
+        colorArm.setPosition(0.1);
+        char color = 'n';
 
-
-
+        /*
+        Detecting color of the jewel:
+        Call getColor() method.
+        Use while loop to detect color until color is not null.
+         */
 
         while(opModeIsActive()) {
 
-            ColorArm.setPosition(0.1);
-            char color = jewel.getColor();
+            colorArm.setPosition(0.1);
+            color = jewel.getColor();
             telemetry.addLine(Character.toString(color));
             telemetry.update();
 
             if(color == 'r'){
+                //Knock off the other ball.
                 robot.waitFor(1);
                 robot.drive(1, 2);
                 robot.completeStop();
                 robot.waitFor(1);
-                ColorArm.setPosition(0.6);
+                colorArm.setPosition(0.6);
                 robot.waitFor(1);
                 robot.drive(-1, 2);
                 break;
 
             }
             if(color == 'b'){
-
+                //Knock off the ball being detected.
                 robot.waitFor(1);
                 robot.drive(-1, 2);
                 robot.completeStop();
                 robot.waitFor(1);
-                ColorArm.setPosition(0.6);
+                colorArm.setPosition(0.6);
                 robot.waitFor(1);
                 robot.drive(1, 2);
                 break;
@@ -105,9 +121,10 @@ public class AAR1Auto extends LinearOpMode {
             idle();
         }
 
-        robot.drive(-1,29);
-        robot.fourWheelTurn(-1,170);
-        robot.drive(1,20);
+        robot.drive(-1,32);
+        robot.fourWheelTurn(-1,180);
+        //robot.drive(1,16);
+        //robot.fourWheelTurn(-1,90);
         robot.openClaw();
         robot.drive(1, 2);
 

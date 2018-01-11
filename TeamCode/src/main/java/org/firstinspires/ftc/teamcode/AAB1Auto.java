@@ -15,6 +15,10 @@ import org.firstinspires.ftc.teamcode.DriveControl;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Main Autonomous Route for Blue Side
+ */
+
 @Autonomous(name = "AAB1Auto")
 public class AAB1Auto extends LinearOpMode {
     private DcMotor motorFrontRight;
@@ -45,6 +49,11 @@ public class AAB1Auto extends LinearOpMode {
         rightServo = hardwareMap.servo.get("rightServo");
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
         
+        /*
+        DriveControl is our driving class.
+        JewelColor is our class for detecting the color of the ball.
+         */
+
         DriveControl robot = new DriveControl(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft,
                                               leftServo, rightServo, liftMotor);
         
@@ -52,18 +61,27 @@ public class AAB1Auto extends LinearOpMode {
         
         JewelColor jewel = new JewelColor(colorSensor);
 
+        /*
+        Procedures after initialization, before start:
+        Set color arm servo to up position.
+        Close the claw and lift to grab the starting glyph.
+         */
+
         colorArm.setPosition(0.5);
 
         robot.closeClaw();
         robot.waitFor(3);
-        robot.moveLift(1, 0.1);
+        robot.moveLift(1, 0.2);
 
         waitForStart();
 
         colorArm.setPosition(0.1);
 
-
-
+        /*
+        Detecting color of the jewel:
+        Call getColor() method.
+        Use while loop to detect color until color is not null.
+         */
 
         while(opModeIsActive()) {
 
@@ -73,6 +91,7 @@ public class AAB1Auto extends LinearOpMode {
             telemetry.update();
 
             if(color == 'b'){
+                //Knock off the other ball.
                 robot.waitFor(1);
                 robot.drive(1, 2);
                 robot.completeStop();
@@ -84,7 +103,7 @@ public class AAB1Auto extends LinearOpMode {
 
             }
             if(color == 'r'){
-                
+                //Knock off the ball being detected.
                 robot.waitFor(1);
                 robot.drive(-1, 2);
                 robot.completeStop();
@@ -105,8 +124,10 @@ public class AAB1Auto extends LinearOpMode {
             idle();
         }
 
+        //Turn to line up to cryptobox.
         robot.fourWheelTurn(-0.5 ,32);
         robot.drive(1,33);
+        //Drops glyph in cryptobox.
         robot.openClaw();
         robot.drive(1, 4);
 

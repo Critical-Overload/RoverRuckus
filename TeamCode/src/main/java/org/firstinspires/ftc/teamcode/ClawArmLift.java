@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Not in Use
+ */
+
 @TeleOp(name = "ClawArmLiftTest")
 public class ClawArmLift extends LinearOpMode
 {

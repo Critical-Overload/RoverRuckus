@@ -9,6 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Code to configure color arm
+ */
+
 @TeleOp(name = "ColorArmTest")
 public class ColorArmTest extends LinearOpMode
 {

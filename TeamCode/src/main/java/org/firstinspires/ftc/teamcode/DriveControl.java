@@ -8,6 +8,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 12/26/17.
  */
 
+/*
+Our Main Driving/Control Class
+ */
+
 public class DriveControl{
     private DcMotor motorFrontRight;
     private DcMotor motorFrontLeft;
@@ -27,7 +31,7 @@ public class DriveControl{
         this.rightServo = rightServo;
         this.liftMotor = liftMotor;
     }
-
+    //Drive Forward or Backward in Inches
     public void drive(double power, double inches) {
         power = power*0.5;
         motorBackLeft.setPower(power);
@@ -42,7 +46,7 @@ public class DriveControl{
         sleep(y);
         completeStop();
     }
-
+    // Four Wheel Turn Counter Clockwise in Degrees
     public void fourWheelTurn(double power, double degrees) {
         //CounterClockwise
         motorBackLeft.setPower(-power);
@@ -58,7 +62,7 @@ public class DriveControl{
         sleep(y);
         completeStop();
     }
-
+    //Drive Forward or Backward in Seconds
     public void driveTime(double power, long seconds){
         motorBackLeft.setPower(power);
         motorFrontRight.setPower(power);
@@ -70,14 +74,14 @@ public class DriveControl{
         sleep(y);
         completeStop();
     }
-
+    //Stop
     public void completeStop(){
         motorBackLeft.setPower(0);
         motorFrontRight.setPower(0);
         motorFrontLeft.setPower(0);
         motorBackRight.setPower(0);
     }
-
+    //Wait Seconds
     public void waitFor(long seconds){
         sleep(seconds * 1000);
     }
@@ -104,7 +108,7 @@ public class DriveControl{
         sleep(y);
         liftMotor.setPower(0);
     }
-    
+    //Wait milliseconds
     private void sleep(long milliseconds) {
         try {
             Thread.sleep(milliseconds);

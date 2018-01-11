@@ -52,14 +52,14 @@ public class AAMainTeleOp extends LinearOpMode
 
         waitForStart();
 
-        ColorArm.setPosition(1);
+
 
 
         while(opModeIsActive())
         {
             //Resets color sensor arm after autonomous
             
-            ColorArm.setPosition(1);
+
 
             //Driving
 

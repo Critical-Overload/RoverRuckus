@@ -9,6 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Code to test and configure the glyph claw
+ */
+
 @TeleOp(name = "ClawTest")
 public class ClawTest extends LinearOpMode
 {

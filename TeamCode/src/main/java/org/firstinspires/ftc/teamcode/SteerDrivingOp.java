@@ -9,6 +9,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Test for best driving control
+Steer Drive:
+Left Stick - Controls Turning Left and Right
+Right Stick - Controls Forward and Backwards
+ */
+
 @TeleOp(name = "SteerDrivingOp")
 public class SteerDrivingOp extends LinearOpMode
 {
@@ -38,6 +45,10 @@ public class SteerDrivingOp extends LinearOpMode
 
         while(opModeIsActive())
         {
+            /*
+            Checks if right bumper is pressed.
+            If so, power is reduced.
+             */
             if(gamepad1.right_bumper){
                 powerMod = 0.25;
             }else{

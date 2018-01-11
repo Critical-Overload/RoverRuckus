@@ -24,8 +24,7 @@ import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import java.util.Locale;
 
 /*
- * This OpMode was written for the VuforiaDemo Basics video. This demonstrates basic principles of
- * using VuforiaDemo in FTC.
+Vuforia Concept for our team to detect Pictographs
  */
 @Autonomous(name = "VuforiaNavIDAuto")
 public class VuforiaNavigationIDAuto extends LinearOpMode {

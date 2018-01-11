@@ -9,6 +9,13 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Test for best driving control
+Steer Drive:
+Left Stick - Controls Left Side of Robot (Forward and Backwards)
+Right Stick - Controls Right Side of Robot (Forward and Backwards)
+ */
+
 @TeleOp(name = "TankDrivingOp")
 public class TankDrivingOp extends LinearOpMode
 {

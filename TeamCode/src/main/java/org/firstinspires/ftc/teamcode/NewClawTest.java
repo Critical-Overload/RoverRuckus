@@ -8,6 +8,9 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 12/2/17.
  */
 
+/*
+Class to test slight claw movements
+ */
 @TeleOp(name = "NewClawTest")
 public class NewClawTest extends LinearOpMode{
 

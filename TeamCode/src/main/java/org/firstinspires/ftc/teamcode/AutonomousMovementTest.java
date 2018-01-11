@@ -9,6 +9,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Main Code to test different types of way to model movement
+ */
+
 @Autonomous(name = "AutonomousMovementTest")
 public class AutonomousMovementTest extends LinearOpMode {
     private DcMotor motorFrontRight;
@@ -18,6 +22,10 @@ public class AutonomousMovementTest extends LinearOpMode {
     private DcMotor liftMotor;
     private Servo leftServo;
     private Servo rightServo;
+
+    /*
+    Drive Control is our driving class
+     */
 
     DriveControl move = new DriveControl(motorFrontRight,motorFrontLeft,motorBackRight,motorBackLeft,leftServo,rightServo,liftMotor);
 

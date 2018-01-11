@@ -10,6 +10,10 @@ import com.qualcomm.robotcore.hardware.Servo;
  * Created by mingch on 9/9/17.
  */
 
+/*
+Previous Main Autonomous Op Mode
+ */
+
 @Autonomous(name = "Semi-AutonomousDrive")
 public class SemiAutonomousDrive extends LinearOpMode {
     private DcMotor motorFrontRight;
