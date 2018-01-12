@@ -55,6 +55,7 @@ public class VuforiaNavigationIDAuto extends LinearOpMode {
         // If we don't include this, it would be null, which would cause errors later on
         lastKnownLocation = createMatrix(0, 0, 0, 0, 0, 0);
 
+            //Debugging purposes
             ttsobject = new TextToSpeech(AppUtil.getInstance().getRootActivity(), new TextToSpeech.OnInitListener() {
                 @Override
                 public void onInit(int status) {
@@ -76,15 +77,25 @@ public class VuforiaNavigationIDAuto extends LinearOpMode {
 
         int getDataType;
 
+
         while (opModeIsActive()) {
+            /*
+            Detection Starts Here
+             */
             RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(target);
             if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
-
+                //Tells what Pictograph it is in telemetry
                 telemetry.addData("VuMark", "%s visible", vuMark);
 
+                //Phone speaks what pictograph it is for audible confirmation
                 ttsobject.speak(vuMark.toString(), TextToSpeech.QUEUE_FLUSH, null, null);
                 sleep(1000);
+                /*
+                Detection Ends Here
+                 */
 
+
+                //Use bottom code for later
 
                 // Ask the listener for the latest information on where the robot is
                 OpenGLMatrix latestLocation = listener.getUpdatedRobotLocation();
