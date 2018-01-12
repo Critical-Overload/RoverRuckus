@@ -20,11 +20,13 @@ public class JewelColor{
         this.colorSensor = colorSensor;
     }
 
+    //Detects color
     public char getColor(){
         float[] hsvValues = new float[3];
         final float values[] = hsvValues;
         int x = 2;
 
+        //Read Sensor
         NormalizedRGBA colors = colorSensor.getNormalizedColors();
         int color = colors.toColor();
 
@@ -34,20 +36,19 @@ public class JewelColor{
         colors.blue  /= max;
 
         color = colors.toColor();
-
         Color.colorToHSV(colors.toColor(), hsvValues);
-
+        //Retrieve Hue Color from HSV Value
         x = Math.round(hsvValues[0]);
 
+        //When detects blue
         if(180 < x && x < 255){
             jewelColor = 'b';
-            //telemetry.addLine("Color: Blue");
+        //When detects Red
         }else if(351 < x){
             jewelColor = 'r';
-            //telemetry.addLine("Color: Red");
+        //When detects nothing
         }else{
             jewelColor = 'n';
-            //telemetry.addLine("Color: Null");
         }
 
         return jewelColor;

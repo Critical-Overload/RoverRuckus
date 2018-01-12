@@ -7,7 +7,9 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
+/*
+Main TeleOp
+ */
 @TeleOp(name = "AAMainTeleOp")
 public class AAMainTeleOp extends LinearOpMode
 {
@@ -54,10 +56,6 @@ public class AAMainTeleOp extends LinearOpMode
 
         while(opModeIsActive())
         {
-            //Resets color sensor arm after autonomous
-            
-
-
             //Driving
 
             /*

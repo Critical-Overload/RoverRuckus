@@ -6,6 +6,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+/*
+Our code to test different lift movements
+ */
+
 @TeleOp(name = "LiftTest")
 public class LiftTest extends LinearOpMode {
   
@@ -39,9 +43,7 @@ public class LiftTest extends LinearOpMode {
       }
       
       /*
-      I think we have two options. We could do this:
-      (continuous)
-      (more flexible, less accurate)
+      Uses continous motion to control lift
       */
       
       if(gamepad2.dpad_up) {
@@ -52,7 +54,9 @@ public class LiftTest extends LinearOpMode {
         liftMotor.setPower(0);
       }
 
-      
+
+
+      //Not Usingbelow
       /* 
       Or this:
       (moves to set positions)

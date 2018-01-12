@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /*
-Class to test slight claw movements
+Used to test claw movements
  */
 @TeleOp(name = "NewClawTest")
 public class NewClawTest extends LinearOpMode{
@@ -22,7 +22,6 @@ public class NewClawTest extends LinearOpMode{
         leftServo.setPosition(0);
         rightServo.setPosition(0);
 
-        //Technically could use servo.getPosition() method, but I didn't know about that.
         double position = 0;
 
         waitForStart();

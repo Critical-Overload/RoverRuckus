@@ -11,6 +11,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.teamcode.JewelColor;
 import org.firstinspires.ftc.teamcode.DriveControl;
 
+/*
+Main Autonomous Route for Red Side
+ */
 @Autonomous(name = "AAR1Auto")
 public class AAR1Auto extends LinearOpMode {
     private DcMotor motorFrontRight;
@@ -116,11 +119,11 @@ public class AAR1Auto extends LinearOpMode {
 
             idle();
         }
-
+        //Backup off the Balance Pad
         robot.drive(-1,32);
+        //Turn to line up to cryptobox.
         robot.fourWheelTurn(-1,180);
-        //robot.drive(1,16);
-        //robot.fourWheelTurn(-1,90);
+        //Drops glyph in cryptobox.
         robot.openClaw();
         robot.drive(1, 2);
 
