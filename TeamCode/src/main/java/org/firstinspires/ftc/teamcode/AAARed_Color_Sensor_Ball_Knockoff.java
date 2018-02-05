@@ -91,7 +91,7 @@ public class AAARed_Color_Sensor_Ball_Knockoff extends LinearOpMode
 
             }
             //If Detect Red
-            if(351 < x){
+            if(x < 11 || 351 < x){
                 telemetry.addLine("Color: Red");
                 sleep(1000);
                 driveBackward(1, 0.5);

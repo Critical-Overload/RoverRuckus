@@ -63,15 +63,17 @@ public class AAB1Auto extends LinearOpMode {
         Close the claw and lift to grab the starting glyph.
          */
 
-        colorArm.setPosition(0.5);
+        colorArm.setPosition(0.6);
 
-        robot.closeClaw();
-        robot.waitFor(3);
-        robot.moveLift(1, 0.2);
 
         waitForStart();
 
+        robot.closeClaw();
+        robot.waitFor(3);
+        robot.moveLift(-1, 0.2);
+
         colorArm.setPosition(0.1);
+        int count = 0;
 
         /*
         Detecting color of the jewel:
@@ -114,7 +116,17 @@ public class AAB1Auto extends LinearOpMode {
 
 
             }
+
+            String cycle = Integer.toString(++count);
+            telemetry.addLine(cycle);
+
             telemetry.update();
+
+
+            if (count > 120){
+                colorArm.setPosition(0.6);
+                break;
+            }
 
 
             idle();

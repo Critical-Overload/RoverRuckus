@@ -62,16 +62,18 @@ public class AAR1Auto extends LinearOpMode {
         Close the claw and lift to grab the starting glyph.
          */
 
-        colorArm.setPosition(0.5);
-
-        robot.closeClaw();
-        robot.waitFor(3);
-        robot.moveLift(1, 0.2);
+        colorArm.setPosition(0.6);
 
         waitForStart();
 
+        robot.closeClaw();
+        robot.waitFor(3);
+        robot.moveLift(-1, 0.2);
+
         colorArm.setPosition(0.1);
         char color = 'n';
+
+        int count = 0;
 
         /*
         Detecting color of the jewel:
@@ -87,7 +89,10 @@ public class AAR1Auto extends LinearOpMode {
             telemetry.update();
 
             if(color == 'r'){
-                //Knock off the other ball.
+                /*
+                Red is detected.
+                Knock off the other ball.
+                 */
                 robot.waitFor(1);
                 robot.drive(1, 2);
                 robot.completeStop();
@@ -99,7 +104,10 @@ public class AAR1Auto extends LinearOpMode {
 
             }
             if(color == 'b'){
-                //Knock off the ball being detected.
+                /*
+                Blue is detected.
+                Knock off the scanned ball.
+                 */
                 robot.waitFor(1);
                 robot.drive(-1, 2);
                 robot.completeStop();
@@ -112,13 +120,24 @@ public class AAR1Auto extends LinearOpMode {
             if( !((color == 'r') || (color == 'b'))){
                 robot.completeStop();
 
-
             }
+
+
+            String cycle = Integer.toString(++count);
+            telemetry.addLine(cycle);
+
             telemetry.update();
+
+            if (count > 120){
+                colorArm.setPosition(0.6);
+                break;
+            }
 
 
             idle();
         }
+
+
         //Backup off the Balance Pad
         robot.drive(-1,32);
         //Turn to line up to cryptobox.

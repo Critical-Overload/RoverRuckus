@@ -43,13 +43,17 @@ public class AAMainTeleOp extends LinearOpMode
         motorBackRight.setDirection(DcMotor.Direction.REVERSE);
         motorFrontRight.setDirection(DcMotor.Direction.REVERSE);
 
-        leftServo.setPosition(0.2);
-        rightServo.setPosition(0.5);
+
 
 
         double powerMod = 1.0;
 
         waitForStart();
+
+        leftServo.setPosition(0.2);
+        rightServo.setPosition(0.5);
+
+        ColorArm.setPosition(0.6);
 
 
 
@@ -111,12 +115,19 @@ public class AAMainTeleOp extends LinearOpMode
             */
 
             if(gamepad2.dpad_up) {
-                liftMotor.setPower(-0.5);
+                liftMotor.setPower(1);
             }else if(gamepad2.dpad_down){
-                liftMotor.setPower(0.5);
+                liftMotor.setPower(-1);
             }else{
                 liftMotor.setPower(0);
             }
+
+            //If left bumper is pressed, reset color arm
+            if(gamepad1.left_bumper) {
+                ColorArm.setPosition(0.6);
+            }
+
+
 
             idle();
         }

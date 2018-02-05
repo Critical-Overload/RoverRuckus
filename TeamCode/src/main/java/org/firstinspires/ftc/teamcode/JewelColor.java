@@ -44,7 +44,7 @@ public class JewelColor{
         if(180 < x && x < 255){
             jewelColor = 'b';
         //When detects Red
-        }else if(351 < x){
+        }else if(x < 11 || 351 < x){
             jewelColor = 'r';
         //When detects nothing
         }else{

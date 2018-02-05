@@ -46,7 +46,7 @@ public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
 
         waitForStart();
 
-        ColorArm.setPosition(0);
+        ColorArm.setPosition(0.1);
 
 
         while(opModeIsActive())
@@ -92,7 +92,7 @@ public class AAABlue_Color_Sensor_Ball_Knockoff extends LinearOpMode
             }
 
             //If Detect Red
-            if(351 < x){
+            if(x < 11 || 351 < x){
                 telemetry.addLine("Color: Red");
                 sleep(1000);
                 driveForward(1, 0.5);
