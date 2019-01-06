@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.robotcore.external.Func;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,7 +17,7 @@ public class AutoNear extends LinearOpMode{
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
     private DcMotor liftMotor;
-    private DcMotor bucketMotor;
+    private Servo bucketServo;
     private DigitalChannel touchSensor;
     
     public void runOpMode() throws InterruptedException{
@@ -26,7 +28,7 @@ public class AutoNear extends LinearOpMode{
         motorBackRight = hardwareMap.dcMotor.get("BR");
         motorBackLeft = hardwareMap.dcMotor.get("BL");
         liftMotor = hardwareMap.dcMotor.get("lift");
-        bucketMotor = hardwareMap.dcMotor.get("bucket");
+        bucketServo = hardwareMap.servo.get("bucketServo");
         touchSensor = hardwareMap.digitalChannel.get("touch");
         
         //REVERSES these motors for proper driving
@@ -35,20 +37,20 @@ public class AutoNear extends LinearOpMode{
         
         
         /*
-        DriveAutonomous contains all our methods for robot automation
+        FunctionsForAutonomous contains all our methods for robot automation
         during the autonomous round. Here we create an DriveAutonomous 
         object named "robot", which we will use to call methods.
         */
-        DriveAutonomous robot = new DriveAutonomous(motorFrontRight, motorFrontLeft,
-        motorBackRight, motorBackLeft, liftMotor, bucketMotor, touchSensor);
+        FunctionsForAutonomous robot = new FunctionsForAutonomous(motorFrontRight, motorFrontLeft,
+        motorBackRight, motorBackLeft, liftMotor, bucketServo, touchSensor);
         
         waitForStart();
         
-        robot.resetBucket();
-        robot.land();
-        robot.moveSideTime(0.5, 1);
-        robot.turnTime(-0.5, 1);
-        robot.moveTime(0.5, 2);
+        //robot.resetBucket();
+        //robot.land();
+        robot.moveSide(12);
+        robot.turn(90);
+        robot.move(24);
         
     }
     
