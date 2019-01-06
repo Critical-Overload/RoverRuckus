@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,7 +16,7 @@ public class AutonomousDepot extends LinearOpMode {
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
     private DcMotor liftMotor;
-    private DcMotor bucketMotor;
+    private Servo bucketServo;
     private DigitalChannel touchSensor;
     
     public void runOpMode() throws InterruptedException{
@@ -25,58 +26,57 @@ public class AutonomousDepot extends LinearOpMode {
         motorBackRight = hardwareMap.dcMotor.get("BR");
         motorBackLeft = hardwareMap.dcMotor.get("BL");
         liftMotor = hardwareMap.dcMotor.get("lift");
-        bucketMotor = hardwareMap.dcMotor.get("bucket");
+        bucketServo = hardwareMap.servo.get("bucketServo");
         touchSensor = hardwareMap.digitalChannel.get("touch");
         
         //REVERSES these motors for proper driving
         motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
         motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
         
-        //This program uses DriveAutonomous, which defines all of our mehtods.
-        DriveAutonomous robot = new DriveAutonomous(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft, liftMotor, bucketMotor, touchSensor);
+        /*
+        //set driving motors to encoder run-to-position mode
+        motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        */
+        /*
+        FunctionsForAutonomous contains all our methods for robot automation
+        during the autonomous round. Here we create an DriveAutonomous 
+        object named "robot", which we will use to call methods.
+        */
+        FunctionsForAutonomous robot = new FunctionsForAutonomous(motorFrontRight, motorFrontLeft,
+        motorBackRight, motorBackLeft, liftMotor, bucketServo, touchSensor);
+        
+        //for REV Hex motors
+        int ticksCycle=288;
+        
         waitForStart();
-        
-        //turn 90 degrees time
-        double a = 0.0;
-        
-        //move half diagonal time (23.5sqrt(2)/2)
-        double b = 0.0;
-        
-        //move full diagonal time (23.4sqrt(2))
-        double c = 0.0;
-        
-        //turn 45 degrees time
-        double d = 0.0;
-        
-        //move one square side time (23.5)
-        double e = 0.0;
-        robot.resetBucket();
-        robot.land();
-        //robot.turnTime(-0.5,a);
-        //robot.moveTime(0.5,b);
+        robot.fullPower();
+        //robot reset Bucket 
+        //robot land
+        robot.turn(90);
+        robot.move(23.5*Math.sqrt(2)/2);
         //SCAN
         //if left;
-            //robot.moveSideTime(0.5,b);
-            //robot.moveTime(0.5,c);
-            //robot.moveSideTime(-0.5,b);
+        robot.moveSide(23.5*Math.sqrt(2)/2);
+        robot.move(23.5*Math.sqrt(2));
+        robot.moveSide(-23.5*Math.sqrt(2)/2);
             //dump arm, bucket
-            //robot.resetBucket();
-            //robot.moveSideTime(-0.5,b);
-            //robot.turnTime(-0.5,d);
-            //robot.moveTime(-0.5,3.5*e);
+        robot.moveSide(-23.5*Math.sqrt(2)/2);
+        robot.turn(45);
+        robot.move(-3.5*23.5);
         //if center;
-            //robot.moveTime(0.5,c);
+            //robot.move(23.5*Math.sqrt(2));
             //dump arm, bucket
-            //robot.resetBucket();
-            //robot.moveSideTime(-0.5,b);
-            //robot.turnTime(-0.5,d);
-            //robot.moveTime(-0.5,3.5*e);
+            //robot.moveSide(-23.5*Math.sqrt(2)/2);
+            //robot.turn(45);
+            //robot.move(-3.5*23.5);
         //if right;
-            //robot.moveSideTime(-0.5,b);
-            //robot.moveTime(0.5,c);
-            //robot.turnTime(0.5,d);
+            //robot.moveSide(-23.5*Math.sqrt(2)/2);
+            //robot.move(23.5*Math.sqrt(2));
+            //robot.turn(45);
             //dump arm, bucket
-            //robot.resetBucket();
-            //robot.moveTime(-0.5,3.5*e);
+            //robot.move(-3.5*23.5);
     }
 }
