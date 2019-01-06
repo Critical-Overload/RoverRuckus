@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import org.firstinspires.ftc.robotcore.external.Func;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -15,7 +17,7 @@ public class DriveControlTest extends LinearOpMode{
     private DcMotor motorBackLeft;
     private DcMotor motorBackRight;
     private DcMotor liftMotor;
-    private DcMotor bucketMotor;
+    private Servo bucketServo;
     private DigitalChannel touchSensor;
     
     public void runOpMode() throws InterruptedException{
@@ -26,7 +28,7 @@ public class DriveControlTest extends LinearOpMode{
         motorBackRight = hardwareMap.dcMotor.get("BR");
         motorBackLeft = hardwareMap.dcMotor.get("BL");
         liftMotor = hardwareMap.dcMotor.get("lift");
-        bucketMotor = hardwareMap.dcMotor.get("bucket");
+        bucketServo = hardwareMap.servo.get("bucketServo");
         touchSensor = hardwareMap.digitalChannel.get("touch");
         
         //REVERSES these motors for proper driving
@@ -39,12 +41,12 @@ public class DriveControlTest extends LinearOpMode{
         during the autonomous round. Here we create an DriveAutonomous 
         object named "robot", which we will use to call methods.
         */
-        DriveAutonomous robot = new DriveAutonomous(motorFrontRight, motorFrontLeft,
-        motorBackRight, motorBackLeft, liftMotor, bucketMotor, touchSensor);
+        FunctionsForAutonomous robot = new FunctionsForAutonomous(motorFrontRight, motorFrontLeft,
+        motorBackRight, motorBackLeft, liftMotor, bucketServo, touchSensor);
         
         waitForStart();
         
-        robot.turnTime(1, 1);
+        robot.turn(90);
 
     }
     
