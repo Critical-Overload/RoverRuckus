@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -10,6 +12,7 @@ public class SpaceshipToasterOp extends LinearOpMode
 {
     private DcMotor motorRight;
     private DcMotor motorLeft;
+    private Servo highfive; 
     @Override
     
     public void runOpMode () throws InterruptedException
@@ -17,8 +20,8 @@ public class SpaceshipToasterOp extends LinearOpMode
         
         motorRight = hardwareMap.dcMotor.get("Right0");
         motorLeft = hardwareMap.dcMotor.get("Left3");  
+        highfive = hardwareMap.servo.get("highfive");
         motorRight.setDirection(DcMotor.Direction.REVERSE);
-        motorLeft.setDirection(DcMotor.Direction.REVERSE);
     
         double powerMod = 1.0;
         waitForStart();
@@ -37,7 +40,11 @@ public class SpaceshipToasterOp extends LinearOpMode
             }
             motorLeft.setPower(powerMod * gamepad1.left_stick_y);
             motorRight.setPower(powerMod * gamepad1.right_stick_y);
-
+            if(gamepad1.a){
+                highfive.setPosition(-1);
+            }else if(gamepad1.b){
+                highfive.setPosition(1);
+            }
             idle();
         }
     }
