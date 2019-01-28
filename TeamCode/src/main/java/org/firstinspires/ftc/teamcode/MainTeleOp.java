@@ -82,7 +82,7 @@ public class MainTeleOp extends LinearOpMode
         waitForStart();
         //set starting power for encoded motors
         liftMotor.setPower(1);
-        double maxH = 0.6; //maximum power for hinge motor
+        double maxH = 1; //maximum power for hinge motor
         hingeMotor.setPower(maxH);
         
         hingeMotor.setTargetPosition(0); //prevents weird error of going to random #
@@ -95,14 +95,34 @@ public class MainTeleOp extends LinearOpMode
             int htp = hingeMotor.getTargetPosition();
             double hpercent = 1;
             
-            if((hp >= (htp-(0.5*ticksCycle))) && (hp < (htp+(0.5*ticksCycle)))){
-                hpercent = Math.abs(htp-hp)/(0.5*ticksCycle);
+            if(htp == (3*ticksCycle) && hp >= (1.2*ticksCycle) && hp <= (3.0*ticksCycle)){
+                if(hp>(2.3*ticksCycle)){
+                    hpercent = 0.5;
+                }
+                else{
+                    hpercent = (Math.abs(htp-hp)/(1.8*ticksCycle));
+                }
+                if(hpercent < 0.001){ //percent of max power deemed minimum to run
+                    hpercent = 0.001;
+                }
+                double power = maxH*hpercent;
+                hingeMotor.setPower(power);
+            }
+            
+            
+            //add comment about if condition here
+            else if((hp >= (htp-(0.5*ticksCycle))) && (hp < (htp+(0.5*ticksCycle)))){
+                hpercent = (Math.abs(htp-hp)/(0.5*ticksCycle));
                 if(hpercent < 0.001){ //percent of max power deemed minimum to run
                     hpercent = 0.001;
                 }
                 telemetry.addData("hpercent", hpercent);
                 double power = maxH * hpercent;
-                hingeMotor.setPower(power);
+                if(gamepad2.right_stick_y == 0){
+                    hingeMotor.setPower(power);
+                }else{
+                    hingeMotor.setPower(maxH);
+                }
             }
             else{
                 hingeMotor.setPower(maxH);
@@ -161,13 +181,18 @@ public class MainTeleOp extends LinearOpMode
                 liftTicks -= 10*powerMod;
                 liftMotor.setTargetPosition(liftTicks);
             }
+            if (gamepad1.x){
+                liftTicks += 10*powerMod;
+                liftMotor.setTargetPosition(liftTicks);
+            }
+            
 
             /*
             Mecanum wheel drive using trigonometry
             */
             double angle = Math.atan2(gamepad1.right_stick_y, gamepad1.right_stick_x) + (Math.PI)/4;
             double r = Math.hypot(gamepad1.right_stick_x, gamepad1.right_stick_y);
-            double rotation = gamepad1.left_stick_x;
+            double rotation = gamepad1.left_stick_x *0.5;//halved for control
             
             motorFrontLeft.setPower((r * Math.cos(angle) - rotation)*powerMod);
             motorBackRight.setPower((r * Math.cos(angle) + rotation)*powerMod);
@@ -228,8 +253,8 @@ public class MainTeleOp extends LinearOpMode
             
             //Arm movement
             if(gamepad2.right_stick_y!=0){
-                hingeMotor.setTargetPosition((int)(hingeMotor.getCurrentPosition()-(gamepad2.right_stick_y*60*mechMod)));
-                telemetry.addData("right_stick",(int)(hingeMotor.getCurrentPosition()-(gamepad2.right_stick_y*60*mechMod)));
+                hingeMotor.setTargetPosition((int)(hingeMotor.getCurrentPosition()-(gamepad2.right_stick_y*120*mechMod)));
+                telemetry.addData("right_stick",(int)(hingeMotor.getCurrentPosition()-(gamepad2.right_stick_y*120*mechMod)));
             }
             else if(gamepad2.a){
                 hingeMotor.setTargetPosition(0);
