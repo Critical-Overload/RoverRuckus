@@ -1,3 +1,31 @@
+/* Copyright (c) 2018 FIRST. All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted (subject to the limitations in the disclaimer below) provided that
+ * the following conditions are met:
+ *
+ * Redistributions of source code must retain the above copyright notice, this list
+ * of conditions and the following disclaimer.
+ *
+ * Redistributions in binary form must reproduce the above copyright notice, this
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
+ *
+ * Neither the name of FIRST nor the names of its contributors may be used to endorse or
+ * promote products derived from this software without specific prior written permission.
+ *
+ * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
+ * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 package org.firstinspires.ftc.teamcode;
 
@@ -5,33 +33,43 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import java.util.List;
+import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
+
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer.CameraDirection;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import java.lang.annotation.Target;
-import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 
-@Autonomous
+import java.util.List;
+
+/**
+ * This 2018-2019 OpMode illustrates the basics of using the TensorFlow Object Detection API to
+ * determine the position of the gold and silver minerals.
+ *
+ * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
+ * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
+ *
+ * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
+ * is explained below.
+ */
+@Autonomous(name = "AutonomousCombinedTest")
 public class AutonomousCombinedTest extends LinearOpMode {
+    private DcMotor motorFrontRight;
+    private DcMotor motorFrontLeft;
+    private DcMotor motorBackRight;
+    private DcMotor motorBackLeft;
+    private DcMotor liftMotor;
+    private DcMotor hingeMotor;
+    private Servo bucketServo;
+    private CRServo intakeServo;
 
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
 
-    //For Precious Metal Start
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -58,40 +96,8 @@ public class AutonomousCombinedTest extends LinearOpMode {
      * Detection engine.
      */
     private TFObjectDetector tfod;
-
-    //For Precious Metal End
-
-    /* Declare OpMode members. */
-    //declares motors and sensors
-    private DcMotor motorFrontRight;
-    private DcMotor motorFrontLeft;
-    private DcMotor motorBackLeft;
-    private DcMotor motorBackRight;
-    private DcMotor liftMotor;
-    private DcMotor hingeMotor;
-    private Servo bucketServo;
-    private Servo intakeServo;
-    ModernRoboticsI2cGyro   gyro    = null;                    // Additional Gyro device
-
-    static final double     COUNTS_PER_MOTOR_REV    = 288 ;     // REV Motor Encoder
-    static final double        COUNTS_PER_MOTOR_TETRIX = 1440;        //Tetrix encoder (for lift)
-    static final double     WHEEL_DIAMETER_INCHES   = 4.0 ;     // For figuring circumference
-    static final double     COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV) / (WHEEL_DIAMETER_INCHES * 3.1415);
-
-    // These constants define the desired driving/control characteristics
-    // The can/should be tweaked to suite the specific robot drive train.
-    static final double     DRIVE_SPEED             = 0.7;     // Nominal speed for better accuracy.
-    static final double     TURN_SPEED              = 0.5;     // Nominal half speed for better accuracy.
-
-    static final double     HEADING_THRESHOLD       = 1 ;      // As tight as we can make it with an integer gyro
-    static final double     P_TURN_COEFF            = 0.1;     // Larger is more responsive, but also less stable
-    static final double     P_DRIVE_COEFF           = 0.15;     // Larger is more responsive, but also less stable
-
-
     @Override
-    public void runOpMode() throws InterruptedException {
-
-        //For Precious Metal Start
+    public void runOpMode() throws InterruptedException{
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         initVuforia();
@@ -106,95 +112,123 @@ public class AutonomousCombinedTest extends LinearOpMode {
         telemetry.addData(">", "Press Play to start tracking");
         telemetry.update();
         waitForStart();
-        //For Precious Metal End
+
+        if (opModeIsActive()) {
+            /** Activate Tensor Flow Object Detection. */
+            if (tfod != null) {
+                tfod.activate();
+            }
+
+            motorFrontRight = hardwareMap.dcMotor.get("FR");
+            motorFrontLeft = hardwareMap.dcMotor.get("FL");
+            motorBackRight = hardwareMap.dcMotor.get("BR");
+            motorBackLeft = hardwareMap.dcMotor.get("BL");
+            liftMotor = hardwareMap.dcMotor.get("lift");
+            hingeMotor = hardwareMap.dcMotor.get("hingeMotor");
+            bucketServo = hardwareMap.servo.get("bucketServo");
+            intakeServo = hardwareMap.crservo.get("intakeServo");
+
+            motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+            motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
+
+            hingeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            hingeMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         /*
-         * Initialize the standard drive system variables.
-         * The init() method of the hardware class does most of the work here
+        DriveControl is our driving class.
          */
-        //initializes motors and sensors
-        motorFrontRight = hardwareMap.dcMotor.get("FR");
-        motorFrontLeft = hardwareMap.dcMotor.get("FL");
-        motorBackRight = hardwareMap.dcMotor.get("BR");
-        motorBackLeft = hardwareMap.dcMotor.get("BL");
-        liftMotor = hardwareMap.dcMotor.get("lift");
-        hingeMotor = hardwareMap.dcMotor.get("hingeMotor");
-        bucketServo = hardwareMap.servo.get("bucketServo");
 
-        //REVERSES these motors for proper driving
-        motorFrontLeft.setDirection(DcMotor.Direction.REVERSE);
-        motorBackLeft.setDirection(DcMotor.Direction.REVERSE);
+            DrivingControlTwo robot = new DrivingControlTwo(motorFrontRight, motorFrontLeft, motorBackRight, motorBackLeft,hingeMotor,bucketServo,intakeServo);
 
-        //initialize gyro
-        gyro = (ModernRoboticsI2cGyro)hardwareMap.gyroSensor.get("gyro");
+            while (opModeIsActive()) {
 
-        // Ensure the robot it stationary, then reset the encoders and calibrate the gyro.
-        motorFrontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        // Send telemetry message to alert driver that we are calibrating;
-        telemetry.addData(">", "Calibrating Gyro");    //
-        telemetry.update();
+                moveArm();
 
-        gyro.calibrate();
+                if (tfod != null) {
+                    // getUpdatedRecognitions() will return null if no new information is available since
+                    // the last time that call was made.
+                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                    if (updatedRecognitions != null) {
+                        telemetry.addData("# Object Detected", updatedRecognitions.size());
+                        if (updatedRecognitions.size() == 2) {
+                            int goldMineralX = -1;
+                            int silverMineral1X = -1;
+                            int silverMineral2X = -1;
+                            for (Recognition recognition : updatedRecognitions) {
+                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
+                                    goldMineralX = (int) recognition.getLeft();
+                                } else if (silverMineral1X == -1) {
+                                    silverMineral1X = (int) recognition.getLeft();
+                                } else {
+                                    silverMineral2X = (int) recognition.getLeft();
+                                }
+                            }
 
-        // make sure the gyro is calibrated before continuing
-        while (!isStopRequested() && gyro.isCalibrating())  {
-            sleep(50);
-            idle();
+
+                            if (goldMineralX != -1 || silverMineral1X != -1 || silverMineral2X != -1) {
+                                if (silverMineral1X < silverMineral2X) {
+                                    telemetry.addData("Gold Mineral Position", "Left");
+                                    robot.fourWheelTurn(-1,70);
+                                    robot.drive(-1,35);
+                                    robot.fourWheelTurn(1,30);
+                                    robot.drive(-1,35);
+                                    moveArm();
+                                    intakeServo.setPower(1);
+                                    sleep(3000);
+                                    intakeServo.setPower(0);
+                                    //Hydralax
+                                    //robot.drive(1,35);
+                                    //robot.fourWheelTurn(-1,30);
+                                    //robot.drive(1,35);
+
+
+                                } else if (goldMineralX > silverMineral1X) {
+                                    telemetry.addData("Gold Mineral Position", "Right");
+                                    robot.fourWheelTurn(1,10);
+                                    robot.drive(-1,35);
+                                    robot.fourWheelTurn(-1,60);
+                                    robot.drive(-1,55);
+                                    moveArm();
+                                    intakeServo.setPower(1);
+                                    sleep(3000);
+                                    intakeServo.setPower(0);
+
+                                    //Hydralax Code
+                                    //robot.drive(1,55);
+                                    //robot.fourWheelTurn(1,30);
+                                    //robot.drive(1,35);
+
+
+
+
+                                } else if(goldMineralX < silverMineral1X){
+                                    telemetry.addData("Gold Mineral Position", "Center");
+                                    robot.fourWheelTurn(-1,15);
+                                    robot.drive(-1,55);
+                                    moveArm();
+                                    intakeServo.setPower(1);
+                                    sleep(3000);
+                                    intakeServo.setPower(0);
+
+                                    //Hydralax
+                                    //robot.drive(1,55);
+
+
+                                }
+                            }
+                        }
+                        telemetry.update();
+                    }
+                }
+            }
         }
 
-        telemetry.addData(">", "Robot Ready.");    //
-        telemetry.update();
-
-        motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setTargetPosition(0);
-
-        // Wait for the game to start (Display Gyro value), and reset gyro before we move..
-        while (!isStarted()) {
-            telemetry.addData(">", "Robot Heading = %d", gyro.getIntegratedZValue());
-            telemetry.update();
+        if (tfod != null) {
+            tfod.shutdown();
         }
-        gyro.resetZAxisIntegrator();
-
-        /////Actual autonomous directions (need revising)
-        // Step through each leg of the path,
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        // Put a hold after each turn
-        //telemetry.addData("land");
-        //telemetry.update();
-        //land();                               // land
-        telemetry.addData("BWD","10");
-        telemetry.update();
-        //gyroDrive(DRIVE_SPEED, -30.0, 0.0);    // Drive BWD 10 inches
-        /*telemetry.addData("Side","10");
-        telemetry.update();
-        gyroSide(DRIVE_SPEED, 10.0, 0.0);       // Drive Sideways 10 inches
-        telemetry.addData("Turn CCW","45 degrees");
-        telemetry.update();
-        gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-        telemetry.addData("hold heading","0.5 seconds");
-        telemetry.update();
-        gyroHold( TURN_SPEED, -45.0, 0.5);    // Hold -45 Deg heading for a 1/2 second
-        telemetry.addData("FWD","10");
-        telemetry.update();
-        gyroDrive(DRIVE_SPEED, 12.0, -45.0);  // Drive FWD 12 inches at 45 degrees
-        telemetry.addData("Side","10");
-        telemetry.update();
-        gyroSide(DRIVE_SPEED,-10.0, 0.0);    // Drive Sideways 10 inches
-        */
-        telemetry.addData("Path", "Complete");
-        telemetry.update();
     }
 
-    //FPMS
     /**
      * Initialize the Vuforia localization engine.
      */
@@ -223,402 +257,133 @@ public class AutonomousCombinedTest extends LinearOpMode {
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
     }
-    //FPMS
 
-    /**
-     *  Method to drive on a fixed compass bearing (angle), based on encoder counts.
-     *  Move will stop if either of these conditions occur:
-     *  1) Move gets to the desired position
-     *  2) Driver stops the opmode running.
-     *
-     * @param speed      Target speed for forward motion.  Should allow for _/- variance for adjusting heading
-     * @param distance   Distance (in inches) to move from current position.  Negative distance means move backwards.
-     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
-     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                   If a relative angle is required, add/subtract from current heading.
-     */
-    public void gyroDrive ( double speed,
-                            double distance,
-                            double angle) {
+    public void moveArm() throws InterruptedException {
+        double bp = 1.0;
+        bucketServo.scaleRange(0.1,1);
+        double maxH=1;
+        int ticksCycle = 1440;
 
-        int     newLeftTarget;
-        int     newRightTarget;
-        int     moveCounts;
-        double  max;
-        double  error;
-        double  steer;
-        double  leftSpeed;
-        double  rightSpeed;
+        hingeMotor.setTargetPosition(3*ticksCycle);
+        hingeMotor.setPower(maxH);
+        while(hingeMotor.isBusy()){
+            //vary hinge power based on position
+            int hp = hingeMotor.getCurrentPosition(); //gets position as short-named variable for use (also used for bucket positioning)
+            int htp = hingeMotor.getTargetPosition();
+            double hpercent = 1;
 
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            //For Precious Metal Start
-
-            /** Activate Tensor Flow Object Detection. */
-            if (tfod != null) {
-                tfod.activate();
-            }
-            //For Precious Metal End
-
-            // Determine new target position, and pass to motor controller
-            moveCounts = (int)(distance * COUNTS_PER_INCH); //could revise to measured figures if necessary
-            newLeftTarget = motorFrontLeft.getCurrentPosition() + moveCounts;
-            newRightTarget = motorFrontRight.getCurrentPosition() + moveCounts;
-
-            // Set Target and Turn On RUN_TO_POSITION
-            motorFrontLeft.setTargetPosition(newLeftTarget);
-            motorBackLeft.setTargetPosition(newLeftTarget);
-            motorFrontRight.setTargetPosition(newRightTarget);
-            motorBackRight.setTargetPosition(newRightTarget);
-
-            motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // start motion.
-            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            motorFrontLeft.setPower(speed);
-            motorFrontRight.setPower(speed);
-            motorBackLeft.setPower(speed);
-            motorBackRight.setPower(speed);
-
-            // keep looping while we are still active, and BOTH motors are running.
-            while (opModeIsActive()) {
-
-
-                //For Precious Metal Actual Detection
-                if (tfod != null) {
-                    // getUpdatedRecognitions() will return null if no new information is available since
-                    // the last time that call was made.
-                    List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
-                    if (updatedRecognitions != null) {
-                        telemetry.addData("# Object Detected", updatedRecognitions.size());
-                        if (updatedRecognitions.size() == 2) {
-                            int goldMineralX = -1;
-                            int silverMineral1X = -1;
-                            int silverMineral2X = -1;
-                            for (Recognition recognition : updatedRecognitions) {
-                                if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                                    goldMineralX = (int) recognition.getLeft();
-                                } else if (silverMineral1X == -1) {
-                                    silverMineral1X = (int) recognition.getLeft();
-                                } else {
-                                    silverMineral2X = (int) recognition.getLeft();
-                                }
-                            }
-                            if (goldMineralX != -1 && silverMineral1X != -1 && silverMineral2X != -1) {
-                                if (goldMineralX < silverMineral1X /*&& goldMineralX < silverMineral2X*/) {
-                                    telemetry.addData("Gold Mineral Position", "Center");
-                                    gyroDrive(DRIVE_SPEED, -30.0, 0.0);    // Drive BWD 10 inches
-
-                                } else if (goldMineralX > silverMineral1X /*&& goldMineralX > silverMineral2X*/) {
-                                    telemetry.addData("Gold Mineral Position", "Right");
-                                    gyroTurn( TURN_SPEED, 45.0);         // Turn  CCW to -45 Degrees
-                                    gyroDrive(DRIVE_SPEED, -30.0, 0.0);    // Drive BWD 10 inches
-
-
-                                } else {
-                                    telemetry.addData("Gold Mineral Position", "Left");
-                                    gyroTurn( TURN_SPEED, -45.0);         // Turn  CCW to -45 Degrees
-                                    gyroDrive(DRIVE_SPEED, -30.0, 0.0);    // Drive BWD 10 inches
-                                }
-                            }
-                        }
-                        telemetry.update();
-                    }
+            if(htp == (3*ticksCycle) && hp >= (1.2*ticksCycle) && hp <= (3.0*ticksCycle)){
+                if(hp>(2.3*ticksCycle)){
+                    hpercent = 0.5;
                 }
-                //For Precious Metal End
-
-                // adjust relative speed based on heading error.
-                error = getError(angle);
-                steer = getSteer(error, P_DRIVE_COEFF);
-
-                // if driving in reverse, the motor correction also needs to be reversed
-                if (distance < 0)
-                    steer *= -1.0;
-
-                leftSpeed = speed - steer;
-                rightSpeed = speed + steer;
-
-                // Normalize speeds if either one exceeds +/- 1.0;
-                max = Math.max(Math.abs(leftSpeed), Math.abs(rightSpeed));
-                if (max > 1.0)
-                {
-                    leftSpeed /= max;
-                    rightSpeed /= max;
+                else{
+                    hpercent = (Math.abs(htp-hp)/(1.8*ticksCycle));
                 }
-
-                motorFrontLeft.setPower(leftSpeed);
-                motorBackLeft.setPower(leftSpeed);
-                motorFrontRight.setPower(rightSpeed);
-                motorBackRight.setPower(rightSpeed);
-
-                // Display drive status for the driver.
-                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
-                telemetry.addData("Target",  "%7d:%7d",      newLeftTarget,  newRightTarget);
-                telemetry.addData("Actual",  "%7d:%7d",      motorFrontLeft.getCurrentPosition(),
-                        motorFrontRight.getCurrentPosition());
-                telemetry.addData("Speed",   "%5.2f:%5.2f",  leftSpeed, rightSpeed);
-                telemetry.update();
-            }
-
-            //FPMS
-            if (tfod != null) {
-                tfod.shutdown();
-            }
-            //FPME
-
-            // Stop all motion;
-            motorFrontRight.setPower(0);
-            motorFrontLeft.setPower(0);
-            motorBackRight.setPower(0);
-            motorBackLeft.setPower(0);
-
-            // Turn off RUN_TO_POSITION
-            motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        }
-    }
-
-    /**
-     *  Method to drive SIDEWAYS on a fixed compass bearing (angle), based on encoder counts.
-     *  Move will stop if either of these conditions occur:
-     *  1) Move gets to the desired position
-     *  2) Driver stops the opmode running.
-     *
-     * @param speed      Target speed for SIDEWAYS motion.  Should allow for _/- variance for adjusting heading
-     * @param distance   Distance (in inches) to move from current position.  Negative distance means move backwards.
-     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
-     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                   If a relative angle is required, add/subtract from current heading.
-     */
-    public void gyroSide ( double speed,
-                           double distance,
-                           double angle) {
-
-        int     newFTarget;
-        int     newBTarget;
-        int     moveCounts;
-        double  max;
-        double  error;
-        double  steer;
-        double  FSpeed;
-        double  BSpeed;
-
-        // Ensure that the opmode is still active
-        if (opModeIsActive()) {
-
-            // Determine new target position, and pass to motor controller
-            moveCounts = (int)(distance * COUNTS_PER_INCH); //could revise to measured figures if necessary
-            newFTarget = motorFrontRight.getCurrentPosition() + moveCounts;
-            newBTarget = motorBackRight.getCurrentPosition() - moveCounts; //sign change should let us go sidewats
-
-            // Set Target and Turn On RUN_TO_POSITION
-            motorFrontLeft.setTargetPosition(newFTarget);
-            motorBackLeft.setTargetPosition(newBTarget);
-            motorFrontRight.setTargetPosition(newFTarget);
-            motorBackRight.setTargetPosition(newBTarget);
-
-            motorFrontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBackLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorFrontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            motorBackRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-            // start motion.
-            speed = Range.clip(Math.abs(speed), 0.0, 1.0);
-            motorFrontLeft.setPower(speed);
-            motorFrontRight.setPower(speed);
-            motorBackLeft.setPower(speed);
-            motorBackRight.setPower(speed);
-
-            // keep looping while we are still active, and BOTH motors are running.
-            while (opModeIsActive() &&
-                    (motorFrontLeft.isBusy() && motorFrontRight.isBusy())) {
-
-                // adjust relative speed based on heading error.
-                error = getError(angle);
-                steer = getSteer(error, P_DRIVE_COEFF);
-
-                // if driving in reverse, the motor correction also needs to be reversed
-                if (distance < 0)
-                    steer *= -1.0;
-
-                FSpeed = speed - steer;
-                BSpeed = speed + steer;
-
-                // Normalize speeds if either one exceeds +/- 1.0;
-                max = Math.max(Math.abs(FSpeed), Math.abs(BSpeed));
-                if (max > 1.0)
-                {
-                    FSpeed /= max;
-                    BSpeed /= max;
+                if(hpercent < 0.001){ //percent of max power deemed minimum to run
+                    hpercent = 0.001;
                 }
-
-                motorFrontLeft.setPower(FSpeed);
-                motorBackLeft.setPower(BSpeed);
-                motorFrontRight.setPower(FSpeed);
-                motorBackRight.setPower(BSpeed);
-
-                // Display drive status for the driver.
-                telemetry.addData("Err/St",  "%5.1f/%5.1f",  error, steer);
-                telemetry.addData("Target",  "%7d:%7d",      newFTarget,  newBTarget);
-                telemetry.addData("Actual",  "%7d:%7d",      motorFrontLeft.getCurrentPosition(),
-                        motorFrontRight.getCurrentPosition());
-                telemetry.addData("Speed",   "%5.2f:%5.2f",  FSpeed, BSpeed);
-                telemetry.update();
+                double power = maxH*hpercent;
+                hingeMotor.setPower(power);
             }
 
-            // Stop all motion;
-            motorFrontRight.setPower(0);
-            motorFrontLeft.setPower(0);
-            motorBackRight.setPower(0);
-            motorBackLeft.setPower(0);
+            //add comment about if condition here
+            else if((hp >= (htp-(0.5*ticksCycle))) && (hp < (htp+(0.5*ticksCycle)))){
+                hpercent = (Math.abs(htp-hp)/(0.5*ticksCycle));
+                if(hpercent < 0.03){ //percent of max power deemed minimum to run
+                    hpercent = 0.001;
+                }
+                telemetry.addData("hpercent", hpercent);
+                double power = maxH * hpercent;
+                if(gamepad2.right_stick_y == 0){
+                    hingeMotor.setPower(power);
+                }else{
+                    hingeMotor.setPower(maxH);
+                }
+            }
+            else{
+                hingeMotor.setPower(maxH);
+            }
+            telemetry.addData("hingePower", hingeMotor.getPower());
 
-            // Turn off RUN_TO_POSITION
-            motorFrontRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorFrontLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBackRight.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motorBackLeft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            //automatically set bucket servo to optimized position
+            double bpercent = 0;
+            if(hp >= 0 && hp < (1.2*ticksCycle)){
+                //set between 1 and .4
+                bpercent = hp/(1.2*ticksCycle);
+                bp = 1-(bpercent*(1-.5));
+            }
+            else if(hp >= (1.2*ticksCycle) && hp <= (3*ticksCycle)){
+                //set between .4 and .0
+                bpercent = (hp - 1.2*ticksCycle)/(3*ticksCycle-1.2*ticksCycle);
+                bp = .4-(bpercent*(.5-.0));
+            }
+
+            bucketServo.setPosition(bp);
+
         }
-    }
+        hingeMotor.setPower(0);
+        intakeServo.setPower(1);
+        Thread.sleep(3000);
+        intakeServo.setPower(0);
+        Thread.sleep(100);
+        hingeMotor.setTargetPosition(0);
+        hingeMotor.setPower(maxH);
+        while(hingeMotor.isBusy()){
+            //vary hinge power based on position
+            int hp = hingeMotor.getCurrentPosition(); //gets position as short-named variable for use (also used for bucket positioning)
+            int htp = hingeMotor.getTargetPosition();
+            double hpercent = 1;
 
-    /**
-     *  Method to spin on central axis to point in a new direction.
-     *  Move will stop if either of these conditions occur:
-     *  1) Move gets to the heading (angle)
-     *  2) Driver stops the opmode running.
-     *
-     * @param speed Desired speed of turn.
-     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
-     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                   If a relative angle is required, add/subtract from current heading.
-     */
-    public void gyroTurn (  double speed, double angle) {
+            if(htp == (3*ticksCycle) && hp >= (1.2*ticksCycle) && hp <= (3.0*ticksCycle)){
+                if(hp>(2.3*ticksCycle)){
+                    hpercent = 0.5;
+                }
+                else{
+                    hpercent = (Math.abs(htp-hp)/(1.8*ticksCycle));
+                }
+                if(hpercent < 0.001){ //percent of max power deemed minimum to run
+                    hpercent = 0.001;
+                }
+                double power = maxH*hpercent;
+                hingeMotor.setPower(power);
+            }
 
-        // keep looping while we are still active, and not on heading.
-        while (opModeIsActive() && !onHeading(speed, angle, P_TURN_COEFF)) {
-            // Update telemetry & Allow time for other processes to run.
-            telemetry.update();
+            //add comment about if condition here
+            else if((hp >= (htp-(0.5*ticksCycle))) && (hp < (htp+(0.5*ticksCycle)))){
+                hpercent = (Math.abs(htp-hp)/(0.5*ticksCycle));
+                if(hpercent < 0.03){ //percent of max power deemed minimum to run
+                    hpercent = 0.001;
+                }
+                telemetry.addData("hpercent", hpercent);
+                double power = maxH * hpercent;
+
+                hingeMotor.setPower(maxH);
+                
+            }
+            else{
+                hingeMotor.setPower(maxH);
+            }
+            telemetry.addData("hingePower", hingeMotor.getPower());
+
+
+            //automatically set bucket servo to optimized position
+            double bpercent = 0;
+            if(hp >= 0 && hp < (1.2*ticksCycle)){
+                //set between 1 and .4
+                bpercent = hp/(1.2*ticksCycle);
+                bp = 1-(bpercent*(1-.5));
+            }
+            else if(hp >= (1.2*ticksCycle) && hp <= (3*ticksCycle)){
+                //set between .4 and .0
+                bpercent = (hp - 1.2*ticksCycle)/(3*ticksCycle-1.2*ticksCycle);
+                bp = .4-(bpercent*(.5-.0));
+            }
+
+            bucketServo.setPosition(bp);
+
         }
+        hingeMotor.setPower(0);
     }
-
-    /**
-     *  Method to obtain & hold a heading for a finite amount of time
-     *  Move will stop once the requested time has elapsed
-     *
-     * @param speed      Desired speed of turn.
-     * @param angle      Absolute Angle (in Degrees) relative to last gyro reset.
-     *                   0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                   If a relative angle is required, add/subtract from current heading.
-     * @param holdTime   Length of time (in seconds) to hold the specified heading.
-     */
-    public void gyroHold( double speed, double angle, double holdTime) {
-
-        ElapsedTime holdTimer = new ElapsedTime();
-
-        // keep looping while we have time remaining.
-        holdTimer.reset();
-        while (opModeIsActive() && (holdTimer.time() < holdTime)) {
-            // Update telemetry & Allow time for other processes to run.
-            onHeading(speed, angle, P_TURN_COEFF);
-            telemetry.update();
-        }
-
-        // Stop all motion;
-        motorFrontRight.setPower(0);
-        motorFrontLeft.setPower(0);
-        motorBackRight.setPower(0);
-        motorBackLeft.setPower(0);
-
-    }
-
-    /**
-     * Perform one cycle of closed loop heading control.
-     *
-     * @param speed     Desired speed of turn.
-     * @param angle     Absolute Angle (in Degrees) relative to last gyro reset.
-     *                  0 = fwd. +ve is CCW from fwd. -ve is CW from forward.
-     *                  If a relative angle is required, add/subtract from current heading.
-     * @param PCoeff    Proportional Gain coefficient
-     * @return
-     */
-    boolean onHeading(double speed, double angle, double PCoeff) {
-        double   error ;
-        double   steer ;
-        boolean  onTarget = false ;
-        double leftSpeed;
-        double rightSpeed;
-
-        // determine turn power based on +/- error
-        error = getError(angle);
-
-        if (Math.abs(error) <= HEADING_THRESHOLD) {
-            steer = 0.0;
-            leftSpeed  = 0.0;
-            rightSpeed = 0.0;
-            onTarget = true;
-        }
-        else {
-            steer = getSteer(error, PCoeff);
-            rightSpeed  = speed * steer;
-            leftSpeed   = -rightSpeed;
-        }
-
-        // Send desired speeds to motors.
-        motorFrontLeft.setPower(leftSpeed);
-        motorBackLeft.setPower(leftSpeed);
-        motorFrontRight.setPower(rightSpeed);
-        motorBackRight.setPower(rightSpeed);
-
-        // Display it for the driver.
-        telemetry.addData("Target", "%5.2f", angle);
-        telemetry.addData("Err/St", "%5.2f/%5.2f", error, steer);
-        telemetry.addData("Speed.", "%5.2f:%5.2f", leftSpeed, rightSpeed);
-
-        return onTarget;
-    }
-
-    /**
-     * getError determines the error between the target angle and the robot's current heading
-     * @param   targetAngle  Desired angle (relative to global reference established at last Gyro Reset).
-     * @return  error angle: Degrees in the range +/- 180. Centered on the robot's frame of reference
-     *          +ve error means the robot should turn LEFT (CCW) to reduce error.
-     */
-    public double getError(double targetAngle) {
-
-        double robotError;
-
-        // calculate error in -179 to +180 range  (
-        robotError = targetAngle - gyro.getIntegratedZValue();
-        while (robotError > 180)  robotError -= 360;
-        while (robotError <= -180) robotError += 360;
-        return robotError;
-    }
-
-    /**
-     * returns desired steering force.  +/- 1 range.  +ve = steer left
-     * @param error   Error angle in robot relative degrees
-     * @param PCoeff  Proportional Gain Coefficient
-     * @return
-     */
-    public double getSteer(double error, double PCoeff) {
-        return Range.clip(error * PCoeff, -1, 1);
-    }
-
-    /**
-     * lands
-     */
-    public void land() throws InterruptedException{
-        liftMotor.setPower(1);
-        liftMotor.setTargetPosition((int)(COUNTS_PER_MOTOR_TETRIX*5.3));
-        while (opModeIsActive() && liftMotor.isBusy()){
-            Thread.sleep(10);
-        }
-    }
-
 
 }
